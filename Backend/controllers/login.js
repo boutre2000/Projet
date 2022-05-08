@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 
 
 
-/*exports.signin = (req, res, next) => {
+exports.signin = (req, res, next) => {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
@@ -21,7 +21,7 @@ const nodemailer = require('nodemailer');
               message: 'login succeeded !',
               userId: user._id,
               token: jwt.sign(
-                { userId: user._id },
+                { userId: user._id, role: user.role },
                 'RANDOM_TOKEN_SECRET',
                 { expiresIn: '24h' }
               )
@@ -32,7 +32,7 @@ const nodemailer = require('nodemailer');
       })
       .catch(error => res.status(500).json({ error }));
   };
-  */
+  
  exports.forgotPass = (req,res)=> {
     if (!req.body.email) {
       return res
@@ -86,30 +86,67 @@ const nodemailer = require('nodemailer');
   };
   
   exports.resetPass=(req,res)=> {
-   const {resetLink, newPass} = req.body;
-    if(resetLink){
-       jwt.verify(resetLink,'RANDOM_TOKEN_SECRET_RESETT', (err,decodedData) =>{
-        if (err) 
-          return res.status(401).json({ error: 'incorrect token or it is expired!' });
-           
-        User.findOne({resetLink}, (err,user)=>{
-          if (err || !user) {
-            return res .status(400) .json({ error: 'User with this token does not exist' });
-            }
-        
-          const obj={
-            password: newPass
-          }
-        user=_.extend(user,obj);
-
-    /*    bcrypt.hash(newPassword, 10, (err, hash) => {
+   const {resetLink, newPass,email} = req.body;
+   if(resetLink){
+    jwt.verify(resetLink,'RANDOM_TOKEN_SECRET_RESETT', (err,decodedData) =>{
+     if (err) 
+       return res.status(401).json({ error: 'incorrect token or it is expired!' });
+   User.findOne({ email }, function (err, user) {
+      if (!user) {
+        return res
+          .status(409)
+          .json({ message: 'User does not exist' });
+      }
+      return bcrypt.hash(newPass, 10, (err, hash) => {
         if (err) {
           return res
             .status(400)
             .json({ message: 'Error hashing password' });
         }
-        user.password = hash;*/
-        user.save((err,result) =>{
+        
+
+        user.updateOne({
+          password: hash
+        }, function (err) {
+         
+
+          if (err) {
+            return res
+              .status(400)
+              .json({ message: 'Password can not reset.' });
+          } else {
+            return res
+              .status(201)
+              .json({ message: 'Password reset successfully' });
+          }
+
+        });
+      });
+    });
+})}else{
+  res.status(200).json('une erreur est survenue')    
+}
+   }
+
+
+ /*   if(resetLink){
+       jwt.verify(resetLink,'RANDOM_TOKEN_SECRET_RESETT', (err,decodedData) =>{
+        if (err) 
+          return res.status(401).json({ error: 'incorrect token or it is expired!' });
+          
+        User.findOne({resetLink}, (err,user)=>{
+          if (err || !user) {
+            return res .status(400) .json({ error: 'User with this token does not exist' });
+            }
+        
+      /*   const obj={
+            password: newPass
+          }
+        user=_.extend(user,obj);*/
+
+    /*    user.password = hash;
+      
+        user.save((err) =>{
           if (err) {
             return res
               .status(400)
@@ -120,9 +157,17 @@ const nodemailer = require('nodemailer');
               .json({ message: 'Password reset successfully' });
           }
         })
+          
        })
-  
-      })}else{
-      return res.status(401).json({error:"erreur authentification"})
-  }
-}
+       bcrypt.hash(newPass, 10)
+       .then(hash => {
+         const user = new User({
+           password: hash
+         });
+
+         user.save()
+         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+         .catch(error => res.status(400).json({ error }));
+     })
+      })*/
+ 

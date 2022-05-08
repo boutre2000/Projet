@@ -1,10 +1,17 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const path = require('path');
 const loginRoutes = require('./routes/login');
-const registrationRoutes = require('./routes/registerAdmin');
 const resetRoutes = require('./routes/reset');
 const registerEmpRoutes = require('./routes/registerEmp');
+const demConRoutes = require('./routes/demCong');
+const demAbsRoutes = require('./routes/demAbs');
+const presenceRoutes = require('./routes/presence');
+const depRoutes = require('./routes/departement');
+const fctRoutes = require('./routes/fonction');
+const posteRoutes = require('./routes/poste');
+const contratRoutes = require('./routes/contrat');
 
 mongoose.connect('mongodb+srv://bout:bout@cluster0.l5dg8.mongodb.net/Doctrine?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -20,12 +27,18 @@ app.use((req, res, next) => {
   });
  
  app.use(express.json());
- app.use('/', loginRoutes);
+//app.use('/', loginRoutes);
  //app.use('/', resetRoutes);
- // app.use('/', registrationRoutes);
- //app.use('/', registerEmpRoutes);
-  //app.use('/resetPass', loginRoutes);
- 
+app.use('/', registerEmpRoutes);
+//app.use('/resetPass', loginRoutes);
+//app.use('/',demConRoutes);
+//app.use('/',demAbsRoutes);
+//app.use('/',presenceRoutes);
+//app.use('/',depRoutes);
+//app.use('/',fctRoutes);
+//app.use('/',posteRoutes);
+//app.use('/',contratRoutes);
+ app.use('/fichier', express.static(path.join(__dirname, 'fichier')));
  
 
   module.exports = app;
