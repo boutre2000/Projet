@@ -3,11 +3,11 @@ const mongoose=require('mongoose')
 
  const demPapier= new mongoose.Schema({
     
-    format:{type:String},  
-    etatD:{type:String},
+    format:{type:String, enum:['Electronique','Physique']},  //Type du papier
+    etatD:{type:String, enum:['En attente','Envoyé'] ,default:"En attente"},
     Nom:{type:String},
   
-    userId:{type:mongoose.Schema.Types.ObjectId, ref: 'User' }
+    userId:{type:mongoose.Schema.Types.ObjectId, ref: 'user' }
 },
 {timestamps: true}
 )

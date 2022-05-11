@@ -68,7 +68,7 @@ exports.signupEmp = (req, res) => {
      const token= jwt.sign(
         { _id: User._id },
         'RANDOM_TOKEN_SECRET_RESETT',
-        { expiresIn: '1h' }
+        { expiresIn: '24h' }
       );
 
       var transporter = nodemailer.createTransport({
@@ -97,9 +97,10 @@ exports.signupEmp = (req, res) => {
       bcrypt.hash(req.body.password, 10)
       .then(hash => {
         const user = new User({
-          email: req.body.email,
+         
           password: hash,
-          resetLink: token
+          resetLink: token,
+          ...req.body
         });
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
@@ -159,7 +160,7 @@ return res.status(500).json({error})
 
 exports.listEmployee= async  (req,res,next) => {
   
-  let user= await User.find({...req.body},{password:0,managId:0,role:0,_id:0,createdAt:0,updatedAt:0,__v:0})
+  let user= await User.find({...req.body},{password:0,role:0,_id:0,createdAt:0,updatedAt:0,__v:0}).populate("managId","Nom Prenom")
   .then(user => {
     if (!user) 
      return res.status(409).json({ error: 'Cette section est vide !' });

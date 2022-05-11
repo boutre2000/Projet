@@ -4,14 +4,20 @@ const Poste = require('../models/poste');
 const moment = require('moment');
 const { find } = require('lodash');
 
-
-
+const User = require('../models/user');
+const post = require('../models/poste');
 
 exports.createContrat =async  (req, res) => {
-    let p= await Poste.find({"posteId":req.body.numP})
+    let user= await User.findOne({email: req.body.email})
+    if (!user) {
+      return res
+      .status(401)
+      .json({ message: 'Cette section est vide' });
+      }
+    let p= await Poste.findOne({userId: user._id})
     if (!p) {
     return res
-    .status(409)
+    .status(401)
     .json({ message: 'Cette section est vide' });
     }
     const cont = new Cont({
@@ -55,14 +61,50 @@ exports.createContrat =async  (req, res) => {
       };
 
     exports.listCont=  (req,res)=>{
-        Cont.find({...req.body},{_id:0,posteId:0,createdAt:0,updatedAt:0,__v:0},(err, docs)=> {
-        if (err){
-          res.status(400).json({err})
-        }
-        else{
-        res.send(docs); } }); 
+      Cont.find({ ...req.body},{_id:0,createdAt:0,updatedAt:0,__v:0}).populate({path: 'posteId',
+       populate:{path: 'userId', select: 'Nom Prenom' },select: 'nomP'
+    })
+      .then((p)=>{
+       if(!p){
+         return res.status(401).json({ error: 'cette section est vide !' });
+       }
+       res.status(200).json(p);
+      })
+      .catch(error => res.status(500).json({ error }))
       }
+
+      exports.getOneCont=  (req,res)=>{
+        Cont.findById(req.params.id,{id:0,createdAt:0,updatedAt:0,__v:0}).populate({path: 'posteId',
+         populate:{path: 'userId', select: 'Nom Prenom' },select: 'nomP'
+      })
+        .then((p)=>{
+         if(!p){
+           return res.status(401).json({ error: 'cette section est vide !' });
+         }
+         res.status(200).json(p);
+        })
+        .catch(error => res.status(500).json({ error }))
+        }
+      exports.checkContUser = async   (req, res,next) => {
+     
+      let p = await   post.findOne({'userId': req.user},{createdAt:0,updatedAt:0,__v:0})
       
+       if(!p){
+         return res.status(401).json({ error: 'cette section est vide !' });
+       }
+       Cont.findOne({posteId:p._id },{_id:0,createdAt:0,updatedAt:0,__v:0}).populate({path: 'posteId',populate:{path: 'depId', select: 'NomD' },
+       populate:{path: 'userId', select: 'Nom Prenom' },select: 'nomP'
+    })
+      .then((c)=>{
+       if(!c){
+         return res.status(401).json({ error: 'cette section est vide !' });
+       }
+       res.status(200).json(c);
+      })
+      .catch(error => res.status(500).json({ error }))
+    
+      } 
+
        exports.editCont = (req,res)=>{
              Cont.findOneAndUpdate({_id: req.params.id},{...req.body} ,(err ) =>{
           if(err){

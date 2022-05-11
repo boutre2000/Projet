@@ -4,7 +4,7 @@ const mongoose=require('mongoose')
  const contrat= new mongoose.Schema({
     dateEd:{type: Date, required: true},
     pj:{type: String},
-    posteId:{ type: mongoose.Schema.Types.ObjectId,  ref: 'poste' }
+    posteId:{ type: mongoose.Schema.Types.ObjectId,  ref: 'Poste' }
 },
 {timestamps: true}
 )

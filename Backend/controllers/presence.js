@@ -36,7 +36,8 @@ exports.savePres =  async (req, res, next) => {
       tab[i-2]={
        enService: new Date(mn),
        enRepos:new Date(mx),
-       userId: user._id
+       userId: user._id,
+       etat: "Present"
        }
       }
        presence.insertMany(tab)
@@ -92,14 +93,22 @@ exports.updatePres=(req, res,next) => {
 
 
 
-exports.getPres = (req, res,next) => {
-      presence.find({...req.body})
-       .then(tab => {
-        if (!tab) { return res.status(401).json({ error: 'Cette section est vide !' })}
-        res.status(200).json(tab)})
-      .catch(error => res.status(500).json({ error }));
-        
-  }
+exports.getPres =async (req, res,next) => {
+  let t= new Array();
+  let p= await  presence.find({ ...req.body})
+    if (!p) {
+      return res.status(401).json({ error: 'cette section est vide !' }); } 
+      for(let i=0;i<p.length;i++){
+      let user= await User.findById(p[i].userId)
+      let manag= await User.findById(user.managId)
+        t[i]={
+          Nom: user.Nom,
+          Prenom: user.Prenom,
+          En_service: p[i].enService,
+          En_repos: p[i].enRepos,
+          Manager: manag.Nom + ' ' + manag.Prenom } }
+           res.status(200).json(t);   }
+
  exports.checkAnomaliePres = async (req, res,next) => {
 
   //let p= await presence.aggregate([{$project:{ enService:{$gt: [{$hour: "$enService"}, '09:01:00']}}}])

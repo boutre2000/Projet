@@ -1,30 +1,30 @@
 const post = require('../models/poste');
 const Dep = require('../models/departement');
 const User = require('../models/user');
-const Fct = require('../models/fonction');
 const Joi = require('joi');
 const { join } = require('lodash');
-
+const moment = require('moment');
 
 
 exports.createPoste =  async (req,res)=>{
-
+/*
   const schema = Joi.object({
-     
+     email: Joi.string().email(),
      Situation: Joi.string(),
      Salaire: Joi.number(),
-     numP: Joi.number(),
+     nomP: Joi.string(),
      StatusP : Joi.string(),
       DateE: Joi.date(),
       DateS: Joi.date(),
-      NomD : Joi.string(),
-      NomF : Joi.string(),
+      NomD: Joi.string(),
+      
+      
      
   })
   
-   let valid = await schema.validateAsync(req.body)
-   res.send(valid);
-   let user= await User.find({$and: [{"Nom" : req.body.Nom},{"Prenom":req.body.Prenom}]})
+   let valid = await schema.validateAsync(req.body)*/
+   
+   let user= await User.findOne({ email : req.body.email})
     if (!user) {
     return res
     .status(409)
@@ -36,22 +36,12 @@ exports.createPoste =  async (req,res)=>{
     .status(409)
     .json({ message: 'Departement n existe pas' });
     }
-    const fct = await Fct.findOne({NomF:req.body.NomF});
-    if (!fct) {
-    return res
-    .status(409)
-    .json({ message: 'fonction n existe pas' });
-    }
+    
   const RequestPost= new post({
-    numP: req.body.numP,
-    Situation:req.body.Situation,
-    Salaire:req.body.Salaire,
-    StatusP:req.body.StatusP,
-    DateE:req.body.DateE,
-    DateS:req.body.DateS,
-    depId:dep._id,
-    fonctionId:fct._id,
-    userId:user._id
+    ...req.body,
+    DateE: moment(req.body.DateE,'YYYY-MM-DDT00:00:00').toDate(),
+    depId:  dep._id,
+    userId: user._id
                           })
     
     RequestPost.save()
@@ -61,68 +51,59 @@ exports.createPoste =  async (req,res)=>{
 }
 
 
-
-    
- exports.listPost = async (req, res,next) => {
+exports.listPost =  (req, res,next) => {
   
-  let t= new Array();
-  let p= await  post.find({ ...req.body})
-    if (!p) {
-      return res.status(401).json({ error: 'cette section est vide !' }); } 
-      for(let i=0;i<dem.length;i++){
-      let user= await User.findById(dem[i].userId)
-      let dep= await Dep.findById(dem[i].depId)
-      let fct= await Fct.findById(dem[i].fonctionId)
-
+  
+  post.find({ ...req.body},{_id:0,createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom")
+   .then((p)=>{
+    if(!p){
+      return res.status(401).json({ error: 'cette section est vide !' });
+    }
+    res.status(200).json(p);
+   })
+   .catch(error => res.status(500).json({ error }))
+  } 
+      
+    
+  exports.checkonePst =  (req, res,next) => {
      
-        t[i]={
-          Nom: user.Nom,
-          Prenom: user.Prenom,
-          Numero: dem[i].numP,
-          Date_Entree: dem[i].dateE,
-          Date_Sortie: dem[i].dateS,
-          Salaire: dem[i].Salaire,
-          Situation: dem[i].Situation,
-          StatusP: dem[i].StatusP,
-          Departement: dep.NomD,
-          Fonction: fct.NomF
-           } }
-           res.status(200).json(t);   }
+    post.findById(req.params.id,{_id:0,createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom")
+  .then((p)=>{
+   if(!p){
+     return res.status(401).json({ error: 'cette section est vide !' });
+   }
+   res.status(200).json(p);
+  })
+  .catch(error => res.status(500).json({ error }))
+  }
 
- exports.checkonePst = async  (req, res,next) => {
-     let p= await  post.findById(req.params.id)
-       if( !p){
-            res.status(500).json('error')  }
-     let user= await User.findById(d.userId)
-        if(  !user){
-       res.status(500).json( 'error' )    }
-       let dep= await Dep.findById(dem[i].depId)
-       let fct= await Fct.findById(dem[i].fonctionId)
- 
-         t[i]={
-           Nom: user.Nom,
-           Prenom: user.Prenom,
-           Numero: dem[i].numP,
-           Date_Entree: dem[i].dateE,
-           Date_Sortie: dem[i].dateS,
-           Salaire: dem[i].Salaire,
-           Situation: dem[i].Situation,
-           StatusP: dem[i].StatusP,
-           Departement: dep.NomD,
-           Fonction: fct.NomF
-            } 
-            res.status(200).json(t);   }
+  exports.checkPstUser =  (req, res,next) => {
+     
+    post.findOne({userId: req.user},{_id:0,createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom")
+  .then((p)=>{
+   if(!p){
+     return res.status(401).json({ error: 'cette section est vide !' });
+   }
+   res.status(200).json(p);
+  })
+  .catch(error => res.status(500).json({ error }))
+  }
 
+  exports.editPost = async (req,res)=>{
+    if(req.body.DateE){
+      req.body.DateE = moment(req.body.DateE,'YYYY-MM-DDT00:00:00').toDate()
+     }
+     if(req.body.DateS){
+      req.body.DateS = moment(req.body.DateS,'YYYY-MM-DDT00:00:00').toDate()
+     }
+    const pst={
+     ...req.body
 
-    exports.editPost = (req,res)=>{
-       const pst={
-        ...req.body
-
-       };
-      PostModels.findOneAndUpdate({_id: req.params.id},{$set:pst}, {new: true}, (err ) =>{
-    if(err){
-         res.status(400).json({error: 'can not save response'})
-    }else{
-       res.status(200).json('reponse sauvegarder' )
-            }    });
-           } ;   
+    };
+   post.findOneAndUpdate({_id: req.params.id},{$set:pst}, {new: true}, (err ) =>{
+ if(err){
+      res.status(400).json({error: 'Modification ne peut etre sauvegardee'})
+ }else{
+    res.status(200).json('Modification sauvegardee' )
+         }    });
+        } ;   

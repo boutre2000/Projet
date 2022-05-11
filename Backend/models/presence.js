@@ -6,14 +6,14 @@ const Schema = mongoose.Schema;
 const presence= new Schema({
 
  
-etat:{type: String},
-enService: {type: Date},
-   //  required: true},
-enRepos: {type: Date}, 
-    //required: true},
 
-type: {type: String},
-userId:{type: mongoose.Schema.Types.ObjectId,  ref: 'User'}
+enService: {type: Date},//heur arrivee
+   //  required: true},
+enRepos: {type: Date}, //heur sortie
+    //required: true},
+status:{type: String, enum:['Absent(e)','Présent(e)']},
+typeAbs: {type: String, enum:['En Mission','En terrin']},
+userId:{type: mongoose.Schema.Types.ObjectId,  ref: 'user'}
 },
 
 {timestamps: true}

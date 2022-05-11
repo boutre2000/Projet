@@ -4,24 +4,23 @@ const { stringify } = require('nodemon/lib/utils')
 
  const poste= new mongoose.Schema({
     
-    numP: {type: Number},
-    Situation :{type:String },
+    nomP: {type: String, required: true},
+    Situation :{type: String, enum:['En phase d&rsquo;essai','Intégré'] },
        //     ,required: true},
         
     Salaire :{type: Number},
       //    ,required: true },
         
-    StatusP :{type: String},
+    StatusP :{type: String, enum:['Actif','Non-actif']},
       // ,required: true},
     
     DateE: {type: Date},
       //      , required: true},
         
-    DateS:{type: Date, default: "Non déterminée"},
+    DateS:{type: Date},
           //  , required: true},
          
-    depId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'departement' },
-    fonctionId:{ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'fonction' },
+    depId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Departement' },
     userId:{ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'user' }
     },
     {timestamps: true}
