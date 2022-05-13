@@ -61,35 +61,21 @@ exports.viewJust =(req, res) => {
 
 exports.checklistDemAbs =async   (req, res,next) => {
   
- 
-  let dem= await  Abs.find({ ...req.body})
-    if (dem) { 
-  let t= new Array();
-      for(let i=0;i<dem.length;i++){
-      let user= await User.findById(dem[i].userId)
-      if(user){
-      let manag= await User.findById(user.managId)
-        t[i]={
-          Nom: user.Nom,
-          Prenom: user.Prenom,
-          Date_Debut: dem[i].dateDebut,
-          Date_Fin: dem[i].dateFin,
-          Justification: dem[i].justification,
-          Etat: dem[i].etat,
-          Manager: manag.Nom + ' ' + manag.Prenom
-           }
-           
-      }
+  Abs.find({ ...req.body}).populate({path: 'userId',
+  populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+  .then((dem)=>{
+    if (!dem) {
+      return res.status(401).json({ error: 'cette section est vide !' }); } 
+     
+           res.status(200).json(dem); 
+    })
+    .catch(error => res.status(500).json({ error }));  
+         
+         }
        
-     // Object.assign(dem[i],{nom: user.Nom});  
-       } 
-       res.status(200).json(t);  
-      }else{
-        
-          return res.status(409).json({ error: 'cette section est vide !' }); }
       
          
- }
+ 
 
 
 
@@ -114,29 +100,14 @@ exports.checklistDemCgGroup = async (req, res,next) => {
         }
       }
 
-exports.checkoneDemAbs = async  (req, res,next) => {
+exports.checkoneDemAbs =   (req, res,next) => {
 
-  let d= await  Abs.findById(req.params.id)
-  if( !d){
-    res.status(500).json('error')
-  }
- let user= await User.findById(d.userId)
- if(  !user){
-   res.status(409).json( 'error' )
- }
- let manag= await User.findById(user.managId)
-
-   let dem={
-    Nom: user.Nom,
-    Prenom: user.Prenom,
-    Date_Debut: d.dateDebut,
-    Date_Fin: d.dateFin,
-    Justification: d.justification,
-    Etat: d.etat,
-    Manager: manag.Nom + ' ' + manag.Prenom
-        
-        }
-    res.status(200).json(dem);   
+  Abs.findById(req.params.id).populate({path: 'userId',
+   populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+   .then((d)=>{
+       res.status(200).json(dem);   
+})
+.catch(error => res.status(500).json({ error })); 
 }
 
  

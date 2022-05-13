@@ -11,6 +11,7 @@ const authz = require('../middleware/authorization');
 router.put('/:id',[auth,admin], presenceCtrl.updatePres);
 //router.get('/',[auth,admin], admin,presenceCtrl.getPres);
 router.get('/', [auth,admin],presenceCtrl.checkAnomaliePres);
+//router.get('/:id', auth,demCongCtrl.checkonePres);
 
 
 

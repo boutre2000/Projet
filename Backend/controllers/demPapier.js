@@ -34,48 +34,33 @@ exports.createDemPap = (req, res) => {
     exports.listDemPapier = async (req,res)=>{
         
 
-      let t= new Array();
-      let dem= await  Papier.find({ ...req.body})
-        if (!dem) {
-          return res.status(401).json({ error: 'cette section est vide !' }); } 
-          for(let i=0;i<dem.length;i++){
-          let user= await User.findById(dem[i].userId)
-        
-            t[i]={
-                Nom: user.Nom,
-                Prenom: user.Prenom,
-                Nom_Papier: d.Nom,
-                etat_demande: d.etatD,
-                format: d.format,
-                
-              }
-        
-           } res.status(200).json(t);   
-     }
+      Papier.find({ ...req.body}).populate({path: 'userId',select: 'Nom Prenom'})
+  .then((dem)=>{
+    if (!dem) {
+      return res.status(401).json({ error: 'cette section est vide !' }); } 
+     
+           res.status(200).json(dem); 
+    })
+    .catch(error => res.status(500).json({ error }));  
+         
+         }
            
             
 
       exports.checkoneDemPap = async  (req, res,next) => {
-        let d= await  Papier.findById(req.params.id)
-            if( !d){
-              res.status(500).json('error')
-            }
-           let user= await User.findById(d.userId)
-           if(  !user){
-             res.status(500).json( 'error' )
-           }
-          
+        
+        Papier.findById(req.params.id).populate({path: 'userId',select: 'Nom Prenom'})
+        .then((dem)=>{
+          if (!dem) {
+            return res.status(401).json({ error: 'cette section est vide !' }); } 
+           
+                 res.status(200).json(dem); 
+          })
+          .catch(error => res.status(500).json({ error }));  
+               
+               }
+           
        
-             let dem={
-                   Nom: user.Nom,
-                   Prenom: user.Prenom,
-                   Nom_Papier: d.Nom,
-                   etat_demande: d.etatD,
-                   format: d.format,
-                   
-                 }
-              res.status(200).json(dem);   
-       }
 
       exports.resDemPapier = (req,res)=> {
         Papier.findOneAndUpdate({_id: req.params.id}, {etatD: req.body.etatD}, (err) =>{

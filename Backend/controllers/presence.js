@@ -94,20 +94,17 @@ exports.updatePres=(req, res,next) => {
 
 
 exports.getPres =async (req, res,next) => {
-  let t= new Array();
-  let p= await  presence.find({ ...req.body})
-    if (!p) {
+  presence.find({ ...req.body}).populate({path: 'userId',
+  populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+  .then((dem)=>{
+    if (!dem) {
       return res.status(401).json({ error: 'cette section est vide !' }); } 
-      for(let i=0;i<p.length;i++){
-      let user= await User.findById(p[i].userId)
-      let manag= await User.findById(user.managId)
-        t[i]={
-          Nom: user.Nom,
-          Prenom: user.Prenom,
-          En_service: p[i].enService,
-          En_repos: p[i].enRepos,
-          Manager: manag.Nom + ' ' + manag.Prenom } }
-           res.status(200).json(t);   }
+     
+           res.status(200).json(dem); 
+    })
+    .catch(error => res.status(500).json({ error }));  
+         
+         }
 
  exports.checkAnomaliePres = async (req, res,next) => {
 
@@ -143,6 +140,15 @@ exports.getPres =async (req, res,next) => {
     }
      res.status(200).json(t)
   
+}
+
+exports.checkonePres =  (req, res,next) => {
+  presence.findById(req.params.id).populate({path: 'userId',
+  populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+  .then((d)=>{
+      res.status(200).json(dem);   
+})
+.catch(error => res.status(500).json({ error })); 
 }
  
  

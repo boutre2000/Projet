@@ -2,6 +2,7 @@ const req = require('express/lib/request');
 const Cong = require('../models/demCong');
 const User = require('../models/user');
 const moment = require('moment');
+const { func } = require('joi');
 
 
 
@@ -66,70 +67,46 @@ exports.viewCause =(req, res) => {
 
 }
 
-exports.checklistDemCg = async (req, res,next) => {
-  let t= new Array();
- let dem= await  Cong.find({ ...req.body})
+exports.checklistDemCg =  (req, res,next) => {
+ 
+   Cong.find({ ...req.body}).populate({path: 'userId',
+ populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+ .then((dem)=>{
    if (!dem) {
      return res.status(401).json({ error: 'cette section est vide !' }); } 
-     for(let i=0;i<dem.length;i++){
-     let user= await User.findById(dem[i].userId)
-     let manag= await User.findById(user.managId)
-       t[i]={
-         Nom: user.Nom,
-         Prenom: user.Prenom,
-         Date_Debut: dem[i].dateDebut,
-         Date_Fin: dem[i].dateFin,
-         type: dem[i].type,
-         Autorisation_Admin: dem[i].autoAdmin,
-         Autorisation_Manager: dem[i].autoManag,
-         Manager: manag.Nom + ' ' + manag.Prenom } }
-          res.status(200).json(t);   }
+    
+          res.status(200).json(dem); 
+   })
+   .catch(error => res.status(500).json({ error }));  
+        
+        }
       
        
 
 exports.checklistDemCgGroup =  async (req, res,next) => {
-      let t= new Array();
-       let users= await  User.find({managId : req.user})
-        if (!users) 
-        return res.status(401).json({ error: 'Pas de groupe pour ce manager !' });
-       for(let i=0; i<users.length; i++){
-       let d=await  Cong.find({$and: [{"userId" : users[i]._id},{...req.body}]})
-            if (!d) 
-            return res.status(401).json({ error: 'Cette section est vide !' });
-            t[i]={
-              Nom: users[i].Nom,
-              Prenom: users[i].Prenom,
-              Date_Debut: d[i].dateDebut,
-              Date_Fin: d[i].dateFin,
-              type: d[i].type,
-              Autorisation_Admin: d[i].autoAdmin,
-              Autorisation_Manager: d[i].autoManag,
-            }
-            res.status(200).json(t);      
-        }
-      }
-exports.checkoneDemCg =async  (req, res,next) => {
- let d= await  Cong.findById(req.params.id)
-     if( !d){
-       res.status(500).json('error')
-     }
-    let user= await User.findById(d.userId)
-    if(  !user){
-      res.status(500).json( 'error' )
+      
+        User.find({managId : req.user})
+        .then((users)=>{     
+        users.forEach(function(user){
+        Cong.findOne({$and: [{userId : user._id},{...req.body}]}).populate({path: 'userId',match:{ managId: { $eq: req.user}},
+         select: 'Nom Prenom'})
+         .then((d)=>{
+          if (!d) 
+          return res.status(401).json({ error: 'Cette section est vide !' });
+          res.status(200).json(d);
+      })    
+   .catch(error => res.status(500).json({ error }));   
+      })
+    })
+    .catch(error => res.status(500).json({ error })); 
     }
-    let manag= await User.findById(user.managId)
-
-      let dem={
-            Nom: user.Nom,
-            Prenom: user.Prenom,
-            Date_Debut: d.dateDebut,
-            Date_Fin: d.dateFin,
-            type: d.type,
-            Autorisation_Admin: d.autoAdmin,
-            Autorisation_Manager: d.autoManag,
-            Manager: manag.Nom + ' ' + manag.Prenom
-          }
+exports.checkoneDemCg =  (req, res,next) => {
+   Cong.findById(req.params.id).populate({path: 'userId',
+   populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+   .then((d)=>{
        res.status(200).json(dem);   
+})
+.catch(error => res.status(500).json({ error })); 
 }
 
  exports.resDemCongAdm = (req,res)=> {

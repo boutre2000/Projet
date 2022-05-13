@@ -4,7 +4,8 @@ const loginCtrl = require('../controllers/login')
 
 
 router.get('/login',loginCtrl.signin);
-//router.put('/',loginCtrl.forgotPass);
-//router.put('/',loginCtrl.resetPass);
+//router.post('/',loginCtrl.forgotPass);
+//router.get('/reset',loginCtrl.resetPass);
+//router.put('/',loginCtrl.updatePass);
 
   module.exports = router;

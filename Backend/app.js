@@ -26,8 +26,7 @@ app.use((req, res, next) => {
   });
   app.use(cors())
  app.use(express.json());
-//app.use('/', loginRoutes);
- //app.use('/', resetRoutes);
+app.use('/', loginRoutes);
 //app.use('/', registerEmpRoutes);
 //app.use('/resetPass', loginRoutes);
 //app.use('/',demConRoutes);
@@ -35,7 +34,7 @@ app.use((req, res, next) => {
 //app.use('/',presenceRoutes);
 //app.use('/',depRoutes);
 //app.use('/',posteRoutes);
-app.use('/',contratRoutes);
+//app.use('/',contratRoutes);
  app.use('/fichier', express.static(path.join(__dirname, 'fichier')));
  
 
