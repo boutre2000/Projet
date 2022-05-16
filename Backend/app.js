@@ -24,10 +24,18 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
-  app.use(cors())
+  
+
+  const corsOptions ={
+  origin:'http://localhost:3000', 
+  credentials:true,            
+  optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
+
  app.use(express.json());
-app.use('/', loginRoutes);
-//app.use('/', registerEmpRoutes);
+app.use('/login', loginRoutes);
+//app.use('/user', registerEmpRoutes);
 //app.use('/resetPass', loginRoutes);
 //app.use('/',demConRoutes);
 //app.use('/',demAbsRoutes);

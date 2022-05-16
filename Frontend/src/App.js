@@ -1,39 +1,24 @@
 import React from 'react';
-import axios from 'axios'
+import './App.css';
+import {Route, BrowserRouter, Switch } from 'react-router-dom';
+import Dashboard from './Component/Dashboard/Dashboard';
+import Login from './Component/Login/Login';
+import useToken from './Component/useToken';
+import Navbar from './Component/Navbar/Navbar';
 
+function App() {
 
-   const Login = ()=>{
-     const [form,setForm] = React.useState({email:null,password:null})
-    const onSubmit = (event)=>{
-      event.preventDefault()
-      axios.post('http://localhost:4000/login' , form )
-      .then(response => console.log(response.data))
-      .catch(error=>console.error(error))
-    }
-    const handleForm = (current)=>(e)=>{
-      setForm({...form,[current]:e.target.value})
-    }
-
-     return <div>
-
-     <div className='container'>
-     <h1 className='co'> Connection </h1>
-
-         <div className='form-div'>
-
-             <form onSubmit={onSubmit}>
-               
-               <input type='text'  onChange={handleForm('email')} 
-               value={form.email} className='form-control '/><br/><br/><br/>
-               <input type='text'  onChange={handleForm('password')} 
-               value={form.password} className='form-control '/><br/><br/><br/>
-               <input type='submit' className='btn' value='Login'/><br/>
-             </form>
-         </div>
-     </div>
-</div>
-   }
-
-
-
-export default Login;
+  const { token, setToken } = useToken();
+  if(!token) {
+    return <Login setToken={setToken} />
+  }
+  return (
+    <div className="wrapper">
+      <Navbar/>
+    <h1>Application</h1>
+          <Dashboard />
+       
+  </div>
+  );
+}
+export default App;
