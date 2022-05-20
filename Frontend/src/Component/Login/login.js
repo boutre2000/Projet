@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom'
 import img1 from './img1.png';
 import img2 from './img2.png'
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import './login.css'
 
 async function loginUser(credentials) {
-	return fetch('http://localhost:4000/login', {
+	return fetch('http://localhost:4000/login/login', {
 	  method: 'POST',
 	  headers: {
 		'Content-Type': 'application/json'
@@ -17,8 +22,19 @@ async function loginUser(credentials) {
 export default function Login({ setToken }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [error,setError]= useState(false);
 
-  
+  const [open, setOpen] = useState(false);
+
+   const handleClickOpen = () => {
+	   if(error)
+     setOpen(true);
+
+   };
+ 
+   const handleClose = () => {
+     setOpen(false);
+   };
 	const handleSubmit = async e => {
 		e.preventDefault();
 		const token = await loginUser({
@@ -26,6 +42,10 @@ export default function Login({ setToken }) {
 		  password
 		});
 		setToken(token);
+		if(token!=='login succeeded !'){
+			setError(true)
+			console.log(token)
+		}
 	  }
 
   return(
@@ -54,11 +74,29 @@ export default function Login({ setToken }) {
           <input type="password" placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' onChange={e => setPassword(e.target.value)} />
         </label>
         <div className='button'>
-          <button type="login">Login</button>
+          <button type="login" onClick={handleClickOpen}>Login</button>
         </div>
-		<p>
+		{error && (
+			<Dialog
+			open={open}
+			onClose={handleClose}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		  >
+			<DialogTitle id="alert-dialog-title">
+			  {" Coordonnées incorrectes "}
+			</DialogTitle>
+			<DialogContent>
+			  <DialogContentText id="alert-dialog-description">
+			 Veuillez vérifier votre coordonnées, l'email n'existe pas ou le mot de passe est incorrecte  .
+			  </DialogContentText>
+			</DialogContent>
+			</Dialog>
+		)
+}
+		<Link to='/ForgotPass' >
 		Forgot password?
-		</p>
+		</Link>
 		</div>
 
       </form>

@@ -11,12 +11,12 @@ exports.signin = (req, res, next) => {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+          return res.status(401).json({message:'Utilisateur non trouvé !'});
         }
         bcrypt.compare(req.body.password, user.password)
           .then(valid => {
             if (!valid) {
-              return res.status(401).json({ error: 'Mot de passe incorrect !' });
+              return res.status(401).json({message:'Mot de passe incorrect !'});
             }
             res.status(200).json({
               message: 'login succeeded !',
@@ -39,12 +39,12 @@ exports.signin = (req, res, next) => {
     if (!req.body.email) {
       return res
       .status(500)
-      .json({ message: 'Email is required' });
+      .json('Email is required');
       }
    
     let user= await  User.findOne({ email: req.body.email})
       if ( !user) {
-      return res .status(400) .json({ message: 'Email does not exist' });
+      return res .status(400) .json('Email does not exist');
       }
     
   const token= jwt.sign(
@@ -55,24 +55,25 @@ exports.signin = (req, res, next) => {
     user.updateOne
     ({resetLink: token}, (err) =>{
       if(err){
-         return res.status(400).json({error: 'reset password link error'})
+         return res.status(500).json('reset password link error')
        }
       });
     var transporter = nodemailer.createTransport({
       service: 'Gmail',
       port: 465,
       auth: {
-        user: process.env.email,
-        pass: process.env.pass
+        user: 'boutre002@gmail.com',
+        pass: 'bout2000'
       }
     });
     const mailOptions={
-      from :process.env.email,
+      from :'boutre002@gmail.com',
       to: req.body.email,
       subject: 'Reset password link',
-      text:  'You are receiving this because you (or someone else) have requested to create account in Doctrine GRH with your email.nn' +
+     /* text:  'You are receiving this because you (or someone else) have requested to create account in Doctrine GRH with your email.nn' +
       'Please click on the following link'+'http://localhost:3000/reset/'+token+
-      'If you did not request this, please ignore this email and your password will remain unchanged'
+      'If you did not request this, please ignore this email and your password will remain unchanged'*/
+      html: '<p>Click <a href="http://localhost:3000/reset/' + token + '">here</a> to reset your password</p>'
       }  ;
  
       transporter.sendMail(mailOptions, (error) => {
@@ -88,20 +89,22 @@ exports.signin = (req, res, next) => {
 
    exports.resetPass= async (req,res) =>{
 
-    if (!req.body.token) {
+    /*if (!req.body.resettoken) {
       return res
       .status(500)
       .json({ message: 'Token is required' });
-      }
+      }*/
       const user = await User.findOne({
-      resetLink: req.body.token
+      Where:{
+      resetLink: req.query.resettoken
+      }
       });
       if (!user) {
       return res
       .status(409)
       .json({ message: 'Invalid URL' });
       }
-      res.status(200).send({useremail: user.email, message: 'Valid URL.' });
+      res.status(200).send({useremail: user.email, message: 'Valid URL' });
       
    }
   
