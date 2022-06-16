@@ -16,8 +16,8 @@ const demCong= new Schema({
     // required: true},
   motif:{type: String}, 
   cause: {type: String},// support electronique
-  autoAdmin:{type:String, enum:['En attente','Acceptée','Non-Acceptée'], default:'En attente'}, 
-  autoManag:{type:String,enum: ['En attente','Acceptée','Non-Acceptée'] ,default:"En attente" },
+  autoAdmin:{type:String, enum:['En attente','Acceptée','Refusée'], default:'En attente'}, 
+  autoManag:{type:String,enum: ['En attente','Acceptée','Refusée'] ,default:"En attente" },
   
 },
 

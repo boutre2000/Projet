@@ -9,17 +9,17 @@ const { func } = require('joi');
 
 exports.createDemCong = (req, res) => {
         //var n= req.body.dateDebut.toString();
-         
+       const file= req.file;
         const cong = new Cong({
          ...req.body,
-         dateFin: moment(req.body.dateFin,'YYYY-MM-DDT00:00:00').toDate(),
-         dateDebut: moment(req.body.dateDebut,'YYYY-MM-DDT00:00:00').toDate(),
-          userId: req.user
+         dateFin: moment(req.body.dateFin,'DD-MM-YYYYT00:00:00').toDate(),
+         dateDebut: moment(req.body.dateDebut,'DD-MM-YYYYT00:00:00').toDate(),
+          userId: req.user,
+          cause: file.path
         });
         cong.save()
           .then(() => res.status(201).json({ message: 'request saved !' }))
           .catch(error => res.status(500).json({ error }));
-   //   if(req.body.type==='exceptionnel'){ }
  }
 
 exports.sendCause = (req, res, next) => {
@@ -69,8 +69,7 @@ exports.viewCause =(req, res) => {
 
 exports.checklistDemCg =  (req, res,next) => {
  
-   Cong.find({ ...req.body}).populate({path: 'userId',
- populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+   Cong.find({ ...req.body}).populate({path: 'userId', select: 'Nom Prenom'})
  .then((dem)=>{
    if (!dem) {
      return res.status(401).json({ error: 'cette section est vide !' }); } 
@@ -84,27 +83,43 @@ exports.checklistDemCg =  (req, res,next) => {
        
 
 exports.checklistDemCgGroup =  async (req, res,next) => {
+  let uids=  new Array();
+        let i=0;
       
         User.find({managId : req.user})
-        .then((users)=>{     
-        users.forEach(function(user){
-        Cong.findOne({$and: [{userId : user._id},{...req.body}]}).populate({path: 'userId',match:{ managId: { $eq: req.user}},
+        .then((users)=>{   
+          if(!users)
+          return res.status(401).json({ error: 'Cette section est vide !' });  
+        
+        
+        console.log('hey')
+        users.map((user=>{
+          
+          uids[i] =user._id;
+            i++;
+        }))
+        
+        console.log(users);
+        Cong.find({$and: [{userId : { $in: uids } },{...req.body}]}).populate({path: 'userId',
+        //match:{ managId: { $eq: req.user}},
          select: 'Nom Prenom'})
          .then((d)=>{
-          if (!d) 
-          return res.status(401).json({ error: 'Cette section est vide !' });
           res.status(200).json(d);
-      })    
-   .catch(error => res.status(500).json({ error }));   
-      })
+         // res.write(d);
+      })   
+        .catch(error => res.status(500).json({ error }));   
+        
+        
     })
+
     .catch(error => res.status(500).json({ error })); 
+    
     }
 exports.checkoneDemCg =  (req, res,next) => {
    Cong.findById(req.params.id).populate({path: 'userId',
-   populate:{path: 'managId', select: 'Nom Prenom' },select: 'Nom Prenom'})
+   select: 'Nom Prenom'})
    .then((d)=>{
-       res.status(200).json(dem);   
+       res.status(200).json(d);   
 })
 .catch(error => res.status(500).json({ error })); 
 }

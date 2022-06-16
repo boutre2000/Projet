@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   const corsOptions ={
   origin:'http://localhost:3000', 
   credentials:true,            
-  optionSuccessStatus:200
+  optionSuccessStatus:200 
 }
 app.use(cors(corsOptions));
 
@@ -37,7 +37,7 @@ app.use(cors(corsOptions));
 app.use('/login', loginRoutes);
 //app.use('/user', registerEmpRoutes);
 //app.use('/resetPass', loginRoutes);
-//app.use('/',demConRoutes);
+app.use('/demCong',demConRoutes);
 //app.use('/',demAbsRoutes);
 //app.use('/',presenceRoutes);
 //app.use('/',depRoutes);
