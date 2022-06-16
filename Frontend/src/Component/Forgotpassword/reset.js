@@ -10,6 +10,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogActions } from '@mui/material';
 import Button from '@mui/material/Button';
+import './forgotpwd.css';
 
 export default function Reset   ()  {
     
@@ -36,7 +37,7 @@ const handleLogin = () => {
           console.log(response);
           if (response.data.message === 'Valid URL') {
            
-              setEmail(response.data.useremail),
+              setEmail(response.data.useremail);
               
               setError(false)
         } else{
@@ -81,17 +82,16 @@ const handleLogin = () => {
           )
       }else{
         return (
-            <div>
-              <h1> Veuillez saisir votre nouveau mot de passe</h1>
-              <form className="password-form" onSubmit={updatePassword}>
+          <div className="forgotpass">
+          <div className='forgotform'>
+              <h1> Reset password</h1>
+              <form className="form" onSubmit={updatePassword}>
               <label>
-             <p>Mot de passe</p>
+             <p>New password</p>
           <input type="password" placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' onChange={(event) => setPassword(event.target.value)} />
         </label>
-                  
-             
         <div className='button'>
-          <button type="login" onClick={handleClickOpen}>Modifier</button>
+          <button type="login" onClick={handleClickOpen}>Update</button>
         </div>
               </form>
       
@@ -115,6 +115,8 @@ const handleLogin = () => {
 			</Dialog>
          
             </div>
+            </div>
+
           );
         
   }

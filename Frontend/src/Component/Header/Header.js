@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import img from './img.png'
-import './Navbar.css'
+import './Header.css'
 
 
 export default function Navbar({setIsLoggeddin}){
@@ -13,16 +12,12 @@ export default function Navbar({setIsLoggeddin}){
     
   };
     return(
+   
     <div className='nav'>
-    <div>
         <img src={img}  alt='logo' />
-    </div>
-
-    <div className='btn'> 
         <button onClick={logout}>  Logout </button>
-
     </div>
-    </div>
+   
 
     )
 
