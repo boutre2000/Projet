@@ -20,7 +20,6 @@ exports.signin = (req, res, next) => {
             }
             res.status(200).json({
               message: 'login succeeded !',
-              userId: user._id,
               role: user.role,
               token: jwt.sign(
                 { userId: user._id },
@@ -62,12 +61,12 @@ exports.signin = (req, res, next) => {
       service: 'Gmail',
       port: 465,
       auth: {
-        user: 'boutre002@gmail.com',
-        pass: 'bout2000'
+        user: 'ib_refas@esi.dz',
+        pass: '31029810'
       }
     });
     const mailOptions={
-      from :'boutre002@gmail.com',
+      from :'ib_refas@esi.dz',
       to: req.body.email,
       subject: 'Reset password link',
      /* text:  'You are receiving this because you (or someone else) have requested to create account in Doctrine GRH with your email.nn' +
@@ -118,7 +117,7 @@ exports.signin = (req, res, next) => {
           if (!hashedPass) {
             return res.status(401).json({ error });
           }
-        user.update({
+        user.updateOne({
           password: hashedPass,
           resetLink: null
         }).then(()=>{res.status(201).json({message: 'Mot de passe modifie' });    })   

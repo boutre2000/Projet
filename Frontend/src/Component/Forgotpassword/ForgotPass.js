@@ -6,6 +6,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import './forgotpwd.css';
+
 async function userEmail(credentials) {
 	return fetch('http://localhost:4000/login/forgotPass', {
 	  method: 'POST',
@@ -43,17 +45,16 @@ async function userEmail(credentials) {
         
     return(
       <div className="forgotpass">
-      
-      
-        
-        <form  onSubmit={handleSubmit}>
+        <div className='forgotform'>
+          <h1>Forgot password</h1>
+        <form   onSubmit={handleSubmit}>
           <div className='form'>
           <label>
             <p>Email</p>
             <input type="email" placeholder='aaaa@legal-doctrine.com' onChange={e => setEmail(e.target.value)} />
           </label>
           <div className='button'>
-            <button type="login" onClick={handleClickOpen}>send</button>
+            <button type="login" onClick={handleClickOpen}>Send</button>
           { !error&& open &&(
             <div>
          <Dialog
@@ -77,7 +78,7 @@ async function userEmail(credentials) {
        {error && open &&(
         <div>
         
-          <h1>Email incorrecte" </h1>
+          <h1>Une erreur est survenue </h1>
             <p>
           Veuillez ressaisir votre addresse email  .
          </p>
@@ -88,6 +89,7 @@ async function userEmail(credentials) {
           
   
         </form>
+        </div>
       </div>
       
       

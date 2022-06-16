@@ -1,6 +1,7 @@
 .nav{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     top: 0;
     flex-wrap: nowrap;
@@ -10,24 +11,17 @@
     opacity: 1;
 }
 
-.nav .logo {
-  position: absolute;
-  left: 30px;
-  top: 10px
-}
-.nav .logo img{
+
+.nav  img{
     position: absolute;
-    top:20px;
-    left: 20px;
-    
-    width: 15px;
-height: 10px;
+    left: 35px;
+   
    
 }
 
-.nav .btn button{
-    right: 20px;
-    top: 5px;
+.nav  button{
+    right: 25px;
+    
     background: #009AD2 0% 0% no-repeat padding-box;
     border-color:  #009AD2;
     position: absolute;

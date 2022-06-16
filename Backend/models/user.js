@@ -9,8 +9,8 @@ const User= new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   resetLink:{ data: String, default: ''},
-  //managId: {type:mongoose.Schema.Types.ObjectId, ref: 'user'},
-  //role:{ type: String, enum:['User','Admin','Manager'], required: true},
+  managId: {type:mongoose.Schema.Types.ObjectId, ref: 'user'},
+  role:{ type: String, enum:['User','Admin','Manager'], required: true},
   Nom: { type: String},
   //,required: true }
   Prenom: { type: String},

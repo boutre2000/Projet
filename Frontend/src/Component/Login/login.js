@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom'
 import img1 from './img1.png';
 import img2 from './img2.png'
+import * as AiIcons from 'react-icons/ai';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -71,7 +72,10 @@ export default function Login({ setToken }) {
         </label>
         <label>
           <p>Password</p>
-          <input type="password" placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' onChange={e => setPassword(e.target.value)} />
+          <input type="password" placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' onChange={e => setPassword(e.target.value)} 
+		  
+		  />
+		  <AiIcons.AiFillEye className='logineye'/>
         </label>
         <div className='button'>
           <button type="login" onClick={handleClickOpen}>Login</button>
@@ -94,7 +98,7 @@ export default function Login({ setToken }) {
 			</Dialog>
 		)
 }
-		<Link to='/ForgotPass' >
+		<Link to='/ForgotPass' className='loginfp' >
 		Forgot password?
 		</Link>
 		</div>
