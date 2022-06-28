@@ -34,18 +34,17 @@ exports.createPoste =  async (req,res)=>{
     if (!dep) {
     return res
     .status(409)
-    .json({ message: 'Departement n existe pas' });
+    .json('Departement n existe pas');
     }
     
   const RequestPost= new post({
     ...req.body,
-    DateE: moment(req.body.DateE,'YYYY-MM-DDT00:00:00').toDate(),
     depId:  dep._id,
     userId: user._id
                           })
     
     RequestPost.save()
-    .then(()=> res.status(200).json({message:'poste enregistre !'}))
+    .then(()=> res.status(200).json('poste enregistre !'))
     .catch(error=> res.status(400).json({error}))
 
 }
@@ -53,8 +52,13 @@ exports.createPoste =  async (req,res)=>{
 
 exports.listPost =  (req, res,next) => {
   
-  
-  post.find({ ...req.body},{_id:0,createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom")
+  if(req.body.email){
+    User.findOne({ email: req.body.email},{createdAt:0,updatedAt:0,__v:0})
+   .then((p)=>{
+     req.body.email= p._userId;
+   })
+  }
+  post.find({ ...req.body},{createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom email")
    .then((p)=>{
     if(!p){
       return res.status(401).json({ error: 'cette section est vide !' });
@@ -67,7 +71,7 @@ exports.listPost =  (req, res,next) => {
     
   exports.checkonePst =  (req, res,next) => {
      
-    post.findById(req.params.id,{_id:0,createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom")
+    post.findById(req.params.id,{createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom email")
   .then((p)=>{
    if(!p){
      return res.status(401).json({ error: 'cette section est vide !' });
@@ -79,10 +83,10 @@ exports.listPost =  (req, res,next) => {
 
   exports.checkPstUser =  (req, res,next) => {
      
-    post.findOne({userId: req.user},{_id:0,createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom")
+    post.find({$and: [{"userId" : req.user},{...req.body}]},{createdAt:0,updatedAt:0,__v:0}).populate("depId", "NomD").populate("userId", "Nom Prenom email")
   .then((p)=>{
    if(!p){
-     return res.status(401).json({ error: 'cette section est vide !' });
+     return res.status(401).json({ error});
    }
    res.status(200).json(p);
   })
@@ -90,11 +94,19 @@ exports.listPost =  (req, res,next) => {
   }
 
   exports.editPost = async (req,res)=>{
-    if(req.body.DateE){
-      req.body.DateE = moment(req.body.DateE,'YYYY-MM-DDT00:00:00').toDate()
+    
+    
+     if(req.body.emp){
+      User.findOne({email: req.body.email})
+       .then(user=>{
+        req.body.emp= user._id;
+       })
      }
-     if(req.body.DateS){
-      req.body.DateS = moment(req.body.DateS,'YYYY-MM-DDT00:00:00').toDate()
+     if(req.body.dep){
+      Dep.findOne({NomD: req.body.dep})
+       .then(dep=>{
+        req.body.dep= dep._id;
+       })
      }
     const pst={
      ...req.body

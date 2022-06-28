@@ -5,15 +5,22 @@ const Schema = mongoose.Schema;
 
 const presence= new Schema({
 
- 
+date: {type: Date},
+present:[{
+    enservice: Date,
+    enrepos: Date,
+    retard: Number,
+    avance: Number,
+    userId: {type: mongoose.Schema.Types.ObjectId,  ref: 'user'},
+  }],
+ absent:[{
+    
+    typeAbs: {type: String, enum:['En Mission','En terrin','Non-Justifiée','Justifiée'], default: 'Non-Justifiée'},
+    userId: {type: mongoose.Schema.Types.ObjectId,  ref: 'user'},
+  }],
 
-enService: {type: Date},//heur arrivee
-   //  required: true},
-enRepos: {type: Date}, //heur sortie
-    //required: true},
-status:{type: String, enum:['Absent(e)','Présent(e)']},
-typeAbs: {type: String, enum:['En Mission','En terrin']},
-userId:{type: mongoose.Schema.Types.ObjectId,  ref: 'user'}
+
+
 },
 
 {timestamps: true}

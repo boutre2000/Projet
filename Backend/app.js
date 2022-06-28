@@ -7,6 +7,7 @@ const loginRoutes = require('./routes/login');
 const registerEmpRoutes = require('./routes/registerEmp');
 const demConRoutes = require('./routes/demCong');
 const demAbsRoutes = require('./routes/demAbs');
+const demPapRoutes = require('./routes/demPapier');
 const presenceRoutes = require('./routes/presence');
 const depRoutes = require('./routes/departement');
 const posteRoutes = require('./routes/poste');
@@ -35,14 +36,14 @@ app.use(cors(corsOptions));
 
  app.use(express.json());
 app.use('/login', loginRoutes);
-//app.use('/user', registerEmpRoutes);
-//app.use('/resetPass', loginRoutes);
+app.use('/user', registerEmpRoutes);
 app.use('/demCong',demConRoutes);
+app.use('/demPap',demPapRoutes);
 //app.use('/',demAbsRoutes);
-//app.use('/',presenceRoutes);
-//app.use('/',depRoutes);
-//app.use('/',posteRoutes);
-//app.use('/',contratRoutes);
+app.use('/pres',presenceRoutes);
+app.use('/dep',depRoutes);
+app.use('/post',posteRoutes);
+app.use('/contrat',contratRoutes);
  app.use('/fichier', express.static(path.join(__dirname, 'fichier')));
  
 

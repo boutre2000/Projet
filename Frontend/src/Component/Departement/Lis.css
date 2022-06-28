@@ -1,0 +1,223 @@
+.lister{
+    margin-left: 400px;
+    margin-top: 200px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    font-size:large;
+   color: #2d3436;
+ 
+    
+
+}
+.lister #aa{ border-left: 1px solid rgb(165, 163, 163);}
+.lister #a{ border-right: 1px solid rgb(165, 163, 163);}
+.lister tr th{
+    padding-left: 40px;
+    padding-right: 50px;
+    padding-bottom: 10px;
+    padding-top:10px;
+    width:300px;
+    color:#4A4A4A;
+    
+    border-top: 1px solid rgb(165, 163, 163);
+    border-bottom: 1px solid rgb(165, 163, 163);/*
+    border: 0px solid #ddd;
+    padding: 8px;*/
+}
+.lister td{
+    padding-left: 20px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    padding-top:10px;
+    color:#4A4A4A;
+  border-bottom: 1px solid rgb(165, 163, 163);/*
+    
+    border: 0px solid #ddd;
+    padding: 8px;*/
+    
+}
+.lister tr:nth-child(even){background-color: #f2f2f2;}
+.lister tr:hover {background-color: #ddd;}
+
+.lister .btn{
+    margin-bottom: 10px;
+    margin-left: 900px;
+    height: 50px;
+    width: 250px;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: x-large;
+}
+.ajout{
+   
+    position: absolute;
+    top: 160px;
+left: 479px;
+width: 483px;
+height: 406px;
+background: #FFFFFF 0% 0% no-repeat padding-box;
+box-shadow: 0px 7px 20px #636E721A;
+border: 1px solid #B2BEC3;
+border-radius: 5px;
+opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+    
+}
+
+.ajout h1{
+    top: 24px;
+left: 53px;
+width: 376px;
+height: 33px;
+font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-medium) 28px/34px var(--unnamed-font-family-helvetica-neue);
+letter-spacing: var(--unnamed-character-spacing-0);
+color: var(--unnamed-color-2d3436);
+text-align: center;
+font: normal normal medium 28px/34px Helvetica Neue;
+letter-spacing: 0px;
+color: #2D3436;
+opacity: 1;
+position: absolute;
+font-weight: bold;
+font-size: 28px;
+}
+
+.ajout input{
+    position: absolute;
+    top: 144px;
+left: 65px;
+width: 333px;
+height: 40px;
+border: 1px solid var(--unnamed-color-b9c4c8);
+background: #FFFFFF 0% 0% no-repeat padding-box;
+border: 1px solid #B9C4C8;
+border-radius: 4px;
+opacity: 1;
+      
+}
+.ajout select{
+    top: 240px;
+left: 65px;
+width: 333px;
+height: 40px;
+border: 1px solid var(--unnamed-color-b9c4c8);
+background: #FFFFFF 0% 0% no-repeat padding-box;
+border: 1px solid #B9C4C8;
+border-radius: 4px;
+opacity: 1;
+position: absolute;
+}
+
+
+ 
+
+.ajout #bb{ 
+    top: 319px;
+left: 65px;
+width: 333px;
+height: 35px;
+background: var(--unnamed-color-009ad2) 0% 0% no-repeat padding-box;
+background: #009AD2 0% 0% no-repeat padding-box;
+border-radius: 4px;
+opacity: 1;
+position: absolute;
+color: #FFFFFF;
+font: var(--unnamed-font-style-normal) normal 600 var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) Source Sans Pro;
+letter-spacing: var(--unnamed-character-spacing-0);
+text-align: center;
+font: normal normal 600 16px/24px Source Sans Pro;
+letter-spacing: 0px;
+
+}
+
+.ajout  .flab{
+    top: 103px;
+left: 65px;
+
+font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) Helvetica;
+letter-spacing: var(--unnamed-character-spacing);
+position: absolute;
+font-weight: bold;
+}
+.ajout  .llab{
+    top: 199px;
+left: 65px;
+
+font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) Helvetica;
+letter-spacing: var(--unnamed-character-spacing);
+position: absolute;
+font-weight: bold;
+}
+
+.ajout select option:disabled{
+    color: #b9c4c8;
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.u{
+text-decoration: none;
+background-color: #18f17a;
+  color: white;
+  text-align: center;
+  padding: 4px 5px;
+  margin-left: 140px;
+  font-size: x-large;
+  border-radius: 5px;
+ 
+}
+.lister button{
+    margin-left: 90px;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #009AD2;
+    border-color: aqua;
+}
+
+.ss{
+    position: absolute;
+    margin-left: 500px;
+    top: 200px;
+    
+    right: 100;
+    width: 600px;
+    height: 550px;
+    background-color: #d7dfe2;
+    border-radius: 10px;
+   
+}
+.ss h1{
+    text-align: center;
+    margin-top: 100px;
+}
+.ss button{
+    
+    margin-top: 100px;
+    margin-left: 130px;
+    width: 400px;
+    height: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: x-large;
+    color: white;
+    background-color: #009AD2;
+}
+.ss .aa{
+    
+    text-align: center;
+    font-size: 75px;
+    margin-top: 50px;
+}

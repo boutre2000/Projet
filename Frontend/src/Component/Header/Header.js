@@ -8,7 +8,7 @@ export default function Navbar({setIsLoggeddin}){
     
   const logout = () => {
     localStorage.removeItem('token');
-      window.location.href='/'
+      window.location.href='/login'
     
   };
     return(

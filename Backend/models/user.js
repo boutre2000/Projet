@@ -14,6 +14,7 @@ const User= new Schema({
   Nom: { type: String},
   //,required: true }
   Prenom: { type: String},
+  idP: {type: mongoose.Schema.Types.ObjectId},
   prenomAr: { type: String },
   nomAr: { type: String },
   sexe: { type: String, enum:['Femme','Homme'] },

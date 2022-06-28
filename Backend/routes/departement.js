@@ -7,9 +7,9 @@ const admin = require('../middleware/isAdmin');
 
 
 
-router.post('/',[auth,admin],depCtrl.createDep);
-router.get('/', auth,depCtrl.listDep);
-router.put('/:id', [auth,admin],depCtrl.editDep);
-router.get('/:id',depCtrl.getOneDep);
+router.post('/add',[auth,admin],depCtrl.createDep);
+router.get('/list',[auth,admin],depCtrl.listDep);
+router.put('/edit/:id', [auth,admin],depCtrl.editDep);
+router.get('/getone/:id',[auth,admin], depCtrl.getOneDep);
 
 module.exports = router;

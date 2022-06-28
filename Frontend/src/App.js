@@ -8,13 +8,50 @@ import Navbar from './Component/Header/Header';
 import ForgotPass from './Component/Forgotpassword/ForgotPass';
 import Reset from './Component/Forgotpassword/reset';
 import Sidebar from './Component/Sidebar/sidebar'
-import Conge from './Component/Conge/conge'
-import Preview from './Component/Conge/preview';
-import Addconge from './Component/Conge/Addconge';
-import CongeM from './Component/Conge/congeM';
-import PreviewM from './Component/Conge/previewM'
-import CongeU from './Component/Conge/congeU';
-import PreviewU from './Component/Conge/previewU';
+
+//demandeConger
+import Conge from './Component/DemConge/conge'
+import Preview from './Component/DemConge/preview';
+import Addconge from './Component/DemConge/Addconge';
+import CongeM from './Component/DemConge/congeM';
+import PreviewM from './Component/DemConge/previewM'
+import CongeU from './Component/DemConge/congeU';
+import PreviewU from './Component/DemConge/previewU';
+
+
+//demandePapier
+
+import Papier from './Component/DemPapier/Papier'
+import PapierU from './Component/DemPapier/PapierU';
+import PreviewPAU from './Component/DemPapier/previewU';
+import PreviewP from './Component/DemPapier/preview';
+import Addpapier from './Component/DemPapier/Addpapier';
+
+//departement
+import ListerD from './Component/Departement/Lister';
+import AjoutD from './Component/Departement/Ajout';
+import UpdateD from './Component/Departement/UpdateD';
+import ListDU from './Component/Departement/ListDU';
+
+//poste
+
+import AjoutP from './Component/Post/AjoutP';
+import ListerP from './Component/Post/ListerP';
+import UpdatePM from './Component/Post/UpdateP';
+import PreviewPU from './Component/Post/PreviewPU';
+import ListPU from './Component/Post/ListPU';
+
+//contrat
+import AjoutC from './Component/Contrat/AjoutC';
+import ListerC from './Component/Contrat/ListerC';
+import UpdateC from './Component/Contrat/UpdateC';
+import PreviewCU from './Component/Contrat/PreviewCU';
+import ListCU from './Component/Contrat/ListCU'
+
+import Pj from './Component/Contrat/Pj';
+import PjV from './Component/Contrat/Visualiser';
+
+
 function App() {
 
   const { token, setToken } = useToken();
@@ -25,7 +62,7 @@ function App() {
       
     <Router>
     <Routes>
-    <Route path='/' element={<Login setToken={setToken} />}/>
+    <Route path='/login' element={<Login setToken={setToken} />}/>
     <Route path='/forgotPass' element={<ForgotPass/>}/>
     <Route path='/reset/:token' element={<Reset/>}/>
     </Routes>
@@ -46,10 +83,39 @@ function App() {
       <Sidebar/>
       
       <Routes>
+        
+      <Route path='/' element={ <Dashboard/>} />
+
         <Route path='/conge' element={ <Conge/>} />
         <Route path='/congeu' element={ <CongeU/>} />
         <Route path='/preview/:id' element={ <Preview/>} />
         <Route path='/addconge' element={ <Addconge/>} />
+
+
+
+        <Route path="/ListDep" element={<ListerD />} />
+          <Route path="/AjoutDep" element={<AjoutD />} />
+          <Route path="/UpdateDep/:id" element={<UpdateD />} />
+
+          <Route path='/papier' element={ <Papier/>} />
+        <Route path='/papeu' element={ <PapierU/>} />
+        <Route path='/previewP/:id' element={ <PreviewP/>} />
+        
+  
+          <Route path="ListPost" element={<ListerP />} />
+          <Route path="/AjoutPost" element={<AjoutP />} />
+          <Route path="UpdatePost/:id" element={<UpdatePM />} />
+
+
+
+        <Route path="/ListCont" element={<ListerC />} />
+          <Route path="/AjoutCont" element={<AjoutC />} />
+          <Route path="/UpdateCont/:id" element={<UpdateC />} />
+          <Route path="/previewcu/:id" element={<PreviewCU />} />
+          <Route path="/listcu" element={<ListCU/>} />
+          <Route path="Pj/:id" element={<Pj />} />
+          <Route path="Visualiser/:id" element={<PjV />} />
+       
 
 
       </Routes>
@@ -67,10 +133,34 @@ if(role==='Manager'){
       <Sidebar/>
       
       <Routes>
+
+      <Route path='/' element={ <Dashboard/>} />
+      
+
+      <Route path="/ListDep" element={<ListDU />} />
+
+
+ 
         <Route path='/conge' element={ <CongeM/>} />
         <Route path='/congeu' element={ <CongeU/>} />
         <Route path='/preview/:id' element={ <PreviewM/>} />
         <Route path='/addconge' element={ <Addconge/>} />
+
+        <Route path='ListPost' element={ <ListPU/>} />
+        <Route path='previewpu/:id' element={ <PreviewPU/>} />
+
+
+
+
+        <Route path='/papier' element={ <PapierU/>} />
+        <Route path='/addpapier' element={ <Addpapier/>} />
+        <Route path='/previewpau/:id' element={ <PreviewPAU/>} />
+
+
+
+        <Route path="/ListCont" element={<ListCU/>} />
+        <Route path="/previewcu/:id" element={<PreviewCU/>} />
+
 
 
 
@@ -89,9 +179,26 @@ if(role==='User'){
       <Sidebar/>
       
       <Routes>
+
+      <Route path='/' element={ <Dashboard/>} />
+
+
+      <Route path="/ListDep" element={<ListDU />} />
+
         <Route path='/conge' element={ <CongeU/>} />
         <Route path='/previewu/:id' element={ <PreviewU/>} />
         <Route path='/addconge' element={ <Addconge/>} />
+
+        <Route path='ListPost' element={ <ListPU/>} />
+        <Route path='previewpu/:id' element={ <PreviewPU/>} />
+
+
+        <Route path='/papier' element={ <PapierU/>} />
+        <Route path='/addpapier' element={ <Addpapier/>} />
+        <Route path='/previewpau/:id' element={ <PreviewPAU/>} />
+
+        <Route path="/previewcu/:id" element={<PreviewCU/>} />
+        <Route path="/ListCont" element={<ListCU/>} />
 
 
       </Routes>

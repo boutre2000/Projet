@@ -14,7 +14,7 @@ exports.createDemPap = (req, res) => {
           userId: req.user
         });
         p.save()
-          .then(() => res.status(201).json({ message: 'request saved !' }))
+          .then(() => res.status(201).json('request saved !' ))
           .catch(error => res.status(500).json({ error }));
     }
 

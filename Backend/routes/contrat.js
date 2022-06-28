@@ -8,13 +8,13 @@ const multer = require('../middleware/multerConfig');
 
 
 
-//router.post('/', [auth,admin],contCtrl.createContrat);
-//router.get('/',[auth,admin],contCtrl.listCont);
-//router.put('/:id', [auth,admin], contCtrl.editCont);
-//router.put('/:id', [auth,admin,multer], contCtrl.sendPj);
-//router.get('/:id', [auth,admin,multer], contCtrl.viewPj);
-//router.get('/',auth,contCtrl.checkContUser);
-router.get('/:id',auth,contCtrl.getOneCont);
+router.post('/add', [auth,admin,multer],contCtrl.createContrat);
+router.get('/list',[auth,admin],contCtrl.listCont);
+router.put('/edit/:id', [auth,admin], contCtrl.editCont);
+router.put('/sendpj/:id', [auth,admin,multer], contCtrl.sendPj);
+router.get('/viewpj/:id', [auth,multer], contCtrl.viewPj);
+router.get('/usercont',auth,contCtrl.checkContUser);
+router.get('/getone/:id',auth, contCtrl.getOneCont);
 
 
 module.exports = router;

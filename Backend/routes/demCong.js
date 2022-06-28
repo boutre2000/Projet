@@ -9,7 +9,7 @@ const authz = require('../middleware/authorization');
 
 router.post('/add',[auth,multer],demCongCtrl.createDemCong);
 //router.put('/:id',[auth,multer], demCongCtrl.sendCause);
-router.get('/fileview/:id',[auth, multer], demCongCtrl.viewCause);
+router.get('/fileview/:id',[ multer], demCongCtrl.viewCause);
 router.get('/list', [auth,admin],demCongCtrl.checklistDemCg);
 router.get('/group', [auth,manag],demCongCtrl.checklistDemCgGroup);
 router.get('/user', auth,demCongCtrl.checklistDemCgUser);

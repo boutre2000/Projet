@@ -8,24 +8,26 @@ const User = require('../models/user');
 const post = require('../models/poste');
 
 exports.createContrat =async  (req, res) => {
+  const file= req.file;
     let user= await User.findOne({email: req.body.email})
     if (!user) {
       return res
       .status(401)
-      .json({ message: 'Cette section est vide' });
+      .json( 'Cette section est vide');
       }
-    let p= await Poste.findOne({userId: user._id})
+    let p= await Poste.findOne({$and: [{"userId" : user._id},{"nomP": req.body.nomP}]})
     if (!p) {
     return res
     .status(401)
-    .json({ message: 'Cette section est vide' });
+    .json('Cette section est vide');
     }
     const cont = new Cont({
-         dateEd: moment(req.body.dateEd,'YYYY-MM-DDT00:00:00').toDate(),
-         posteId:p._id
+         ...req.body,
+         posteId:p._id,
+         pj: file.path
         });
         cont.save()
-          .then(() => res.status(201).json({ message: 'Contrat cree !' }))
+          .then(() => res.status(201).json( 'Contrat cree !'))
           .catch(error => res.status(500).json({ error }))
    }
 
@@ -54,15 +56,15 @@ exports.createContrat =async  (req, res) => {
           if(err){
             return res .status(500) .json({err});
           }else{
-            return  res.download(contrat.pj);
+            return  res.download(contrat.pj)
           }
         })
         
       };
 
     exports.listCont=  (req,res)=>{
-      Cont.find({ ...req.body},{_id:0,createdAt:0,updatedAt:0,__v:0}).populate({path: 'posteId',
-       populate:{path: 'userId', select: 'Nom Prenom' },select: 'nomP'
+      Cont.find({ ...req.body}).populate({path: 'posteId',
+       populate:{path: 'userId', select: 'Nom Prenom email' },select: 'nomP'
     })
       .then((p)=>{
        if(!p){
@@ -74,8 +76,8 @@ exports.createContrat =async  (req, res) => {
       }
 
       exports.getOneCont=  (req,res)=>{
-        Cont.findById(req.params.id,{id:0,createdAt:0,updatedAt:0,__v:0}).populate({path: 'posteId',
-         populate:{path: 'userId', select: 'Nom Prenom' },select: 'nomP'
+        Cont.findById(req.params.id).populate({path: 'posteId',
+         populate:{path: 'userId', select: 'Nom Prenom email' },select: 'nomP'
       })
         .then((p)=>{
          if(!p){
@@ -85,19 +87,29 @@ exports.createContrat =async  (req, res) => {
         })
         .catch(error => res.status(500).json({ error }))
         }
+
+
+
+
+
       exports.checkContUser = async   (req, res,next) => {
-     
-      let p = await   post.findOne({'userId': req.user},{createdAt:0,updatedAt:0,__v:0})
-      
-       if(!p){
-         return res.status(401).json({ error: 'cette section est vide !' });
+     let i=0;
+     let uids=  new Array();
+      let ps = await   post.find({'userId': req.user},{createdAt:0,updatedAt:0,__v:0})
+      ps.map((item=>{
+          
+        uids[i] =item._id;
+          i++;
+      }))
+       if(!ps){
+         return res.status(401).json('cette section est vide !' );
        }
-       Cont.findOne({posteId:p._id },{_id:0,createdAt:0,updatedAt:0,__v:0}).populate({path: 'posteId',populate:{path: 'depId', select: 'NomD' },
+       Cont.find({posteId : { $in: uids } },{createdAt:0,updatedAt:0,__v:0}).populate({path: 'posteId',populate:{path: 'depId', select: 'NomD' },
        populate:{path: 'userId', select: 'Nom Prenom' },select: 'nomP'
     })
       .then((c)=>{
        if(!c){
-         return res.status(401).json({ error: 'cette section est vide !' });
+         return res.status(401).json('cette section est vide !' );
        }
        res.status(200).json(c);
       })
@@ -106,8 +118,26 @@ exports.createContrat =async  (req, res) => {
       } 
 
        exports.editCont = (req,res)=>{
-             Cont.findOneAndUpdate({_id: req.params.id},{...req.body} ,(err ) =>{
+
+
+        
+     if(req.body.email){
+      User.findOne({email: req.body.email})
+       .then(user=>{
+        req.body.email= user._id;
+       })
+     }
+     if(req.body.nomP){
+      post.findOne({nomP: req.body.nomP})
+       .then(post=>{
+        req.body.nomP= post._id;
+       })
+     }
+    const pst={
+     ...req.body
+    }
+             Cont.findOneAndUpdate({_id: req.params.id},{$set:pst}, {new: true},(err ) =>{
           if(err){
-               res.status(400).json({error: 'modification ne peut etre sauvegardee'})
+               res.status(400).json('modification ne peut etre sauvegardee')
           }else{
              res.status(200).json('modificaation sauvegarde' )  }  });};  

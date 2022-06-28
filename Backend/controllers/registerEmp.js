@@ -58,12 +58,7 @@ return res.status(400).json({error: 'Modification peut etre effectuee'})
 // Admin modify  employe coords
  exports.updateInfoEmployee = (req,res)=> {
  
-      if(req.body.password){
-          return res.status(404).json({ error: 'Mot de passe ne peut etre modifie!' });
-        }
-        if(req.body.dateNaiss){
-           req.body.dateNaiss=  moment(req.body.dateNaiss,'YYYY-MM-DDT00:00:00').toDate();
-        }
+     
   User.findOneAndUpdate({_id: req.params.id}, {...req.body}, (err) =>{
       if(err){
      return res.status(400).json({error: 'Modification ne peut etre effectuee'})
@@ -77,7 +72,7 @@ return res.status(400).json({error: 'Modification peut etre effectuee'})
 
 exports.listEmployee=  (req,res,next) => {
   
-  User.find({...req.body},{password:0,role:0,_id:0,createdAt:0,updatedAt:0,__v:0}).populate("managId","Nom Prenom")
+  User.find({...req.body},{password:0,createdAt:0,updatedAt:0,__v:0}).populate("managId","Nom Prenom")
   .then(user => {
     if (!user) 
      return res.status(409).json({ error: 'Cette section est vide !' });

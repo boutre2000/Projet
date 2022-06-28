@@ -38,12 +38,7 @@ export const SidebarData = [
     icon: <ImIcons.ImStatsDots style={style} />,
     cName: 'nav-text'
   },
-  {
-    title: 'Lorem ipsum',
-    path: '/',
-    icon: <RiIcons.RiBubbleChartLine style={style} />,
-    cName: 'nav-text'
-  },
+  
   {
     title: 'Employé',
     path: '/',
@@ -58,38 +53,50 @@ export const SidebarData = [
   },
   {
     title: 'Départements',
-    path: '/reports',
+    path: '/ListDep',
     icon: <MdIcons.MdOutlineHomeWork style={style} />,
     cName: 'nav-text'
   },
   {
     title: 'Postes',
-    path: '/products',
+    path: '/ListPost',
     icon: <BiIcons.BiBriefcaseAlt style={style} />,
     cName: 'nav-text'
   },
   {
     title: 'Contrats',
-    path: '/team',
+    path: '/ListCont',
     icon: <RiIcons.RiNewspaperLine  style={style}/>,
     cName: 'nav-text'
   },
   {
-    title: 'Présences',
+    title: 'Assiduités',
     path: '/support',
-    icon: <MdIcons.MdCalendarToday style={style} />,
+    icon: <RiIcons.RiFingerprintLine style={style} />,
     cName: 'nav-text'
   },
   {
-    title: 'Absences',
-    path: '/support',
-    icon: <IoIcons.IoMdHelpCircle style={style} />,
-    cName: 'nav-text'
+    title: 'Demandes',
+    path: '/',
+    icon: <FaIcons.FaChevronDown  style={styletitle}/>,
+    cName: 'nav-title'
   },
   {
     title: 'Congés',
     path: '/conge',
     icon: <RiIcons.RiOpenArmLine style={style} />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Absences',
+    path: '/absence',
+    icon: <BiIcons.BiWalk style={style} />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Papier administratif',
+    path: '/papier',
+    icon: <RiIcons.RiFilePaper2Line style={style} />,
     cName: 'nav-text'
   }
 ];

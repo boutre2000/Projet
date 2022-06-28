@@ -12,8 +12,7 @@ exports.createDemCong = (req, res) => {
        const file= req.file;
         const cong = new Cong({
          ...req.body,
-         dateFin: moment(req.body.dateFin,'DD-MM-YYYYT00:00:00').toDate(),
-         dateDebut: moment(req.body.dateDebut,'DD-MM-YYYYT00:00:00').toDate(),
+         
           userId: req.user,
           cause: file.path
         });
@@ -45,11 +44,11 @@ catch(error){
 exports.viewCause =(req, res) => {
   //return res.sendFile(path.join(`${__dirname}/../views/index.html`));
   Cong.findOne({_id:req.params.id},(err,demande)=>{
-    if(err){
+    if(err)
       return res .status(500) .json({err});
-    }else{
-      return  res.download(demande.cause);
-    }
+    
+       res.send(demande.cause);
+    
   })
   
 };

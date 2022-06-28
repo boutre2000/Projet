@@ -5,7 +5,22 @@ const moment = require('moment');
 const { object } = require('joi');
 
 
+exports.setPres = async( req, res, next) =>{
+  const file=req.file;
+  const workbook = XLSX.readFile(file.path);
+  const worksheet = workbook.SheetNames;
+  const xlDatao = XLSX.utils.sheet_to_json(workbook.Sheets[worksheet[0]])
+  const xlData = XLSX.utils.sheet_to_json(workbook.Sheets[worksheet[0]],{header:1, defval: ""})
+  tab= new Array(); 
+ 
+  
+  console.log(xlData)
 
+  
+  
+  console.log(xlData)
+
+}
 
 exports.savePres =  async (req, res, next) => {
   const file=req.file;

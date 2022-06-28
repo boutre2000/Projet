@@ -29,7 +29,7 @@ const handleClose = () => {
   setOpen(false);
 };
 const handleLogin = () => {
-      window.location.href='/' 
+      window.location.href='/login' 
   };
         
       axios.get('http://localhost:4000/login/reset', { params: {resettoken: token}})

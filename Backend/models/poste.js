@@ -5,7 +5,7 @@ const { stringify } = require('nodemon/lib/utils')
  const poste= new mongoose.Schema({
     
     nomP: {type: String, required: true},
-    Situation :{type: String, enum:['En phase d&rsquo;essai','Intégré'] },
+    Situation :{type: String, enum:["En phase d'essai","Intégré"] },
        //     ,required: true},
         
     Salaire :{type: Number},

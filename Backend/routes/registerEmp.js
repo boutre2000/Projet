@@ -9,10 +9,10 @@ const manag = require('../middleware/isManager');
 //router.post('/',[auth,admin],registerEmpCtrl.signupEmp);
 //router.put('/',auth,registerEmpCtrl.updateInfoUser);
 //router.put('/:id',[auth,admin],registerEmpCtrl.updateInfoEmployee);
-router.get('/',registerEmpCtrl.listEmployee);
-//router.get('/:id',registerEmpCtrl.checkInfoEmp);
-//router.get('/:id',registerEmpCtrl.checkInfoUser);
-//router.get('/',[auth,manag],registerEmpCtrl.checkGroupeUser);
+router.get('/list', [auth,admin],registerEmpCtrl.listEmployee);
+//router.get('/emp/:id',[auth,admin],registerEmpCtrl.checkInfoEmp);
+//router.get('/user',auth,registerEmpCtrl.checkInfoUser);
+//router.get('/group',[auth,manag],registerEmpCtrl.checkGroupeUser);
 
  
 
