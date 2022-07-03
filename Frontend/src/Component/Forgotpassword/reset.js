@@ -1,140 +1,128 @@
+import React from "react";
+import { useState } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import "./forgotpwd.css";
 
-import React from 'react';
-import { useState } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { DialogActions } from '@mui/material';
-import Button from '@mui/material/Button';
-import './forgotpwd.css';
+export default function Reset() {
+  const { token } = useParams();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
 
-export default function Reset   ()  {
-    
-   const {token} = useParams();
-   const [email, setEmail] = useState();
-   const [password,setPassword] = useState()  ;
-   const [error, setError] = useState(false);
-   const [open, setOpen] = useState(false);
-
-        
-   const handleClickOpen = () => {
-  setOpen(true);
-};
-
-const handleClose = () => {
-  setOpen(false);
-};
-const handleLogin = () => {
-      window.location.href='/' 
+  const handleClickOpen = () => {
+    setOpen(true);
   };
-        
-      axios.get('http://localhost:4000/login/reset', { params: {resettoken: token}})
-          .then((response)=> {
-          console.log(response);
-          if (response.data.message === 'Valid URL') {
-           
-              setEmail(response.data.useremail);
-              
-              setError(false)
-        } else{
-         
-              setError(true)
-          
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleLogin = () => {
+    window.location.href = "/";
+  };
+
+  axios
+    .get("http://localhost:4000/login/reset", { params: { resettoken: token } })
+    .then((response) => {
+      console.log(response);
+      if (response.data.message === "Valid URL") {
+        setEmail(response.data.useremail);
+
+        setError(false);
+      } else {
+        setError(true);
+      }
+    });
+
+  const updatePassword = (e) => {
+    e.preventDefault();
+
+    axios
+      .put("http://localhost:4000/login/updatePass", {
+        email,
+        password,
+        resettoken: token,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.message === "Mot de passe modifie") {
+          setError(false);
+        } else {
+          setError(true);
         }
-    }) 
+      });
+  };
 
-    
-    
-    const   updatePassword= (e) => {
-        e.preventDefault();
-        
-        
-       axios.put(
-            'http://localhost:4000/login/updatePass',
-            {
-              email,
-              password,
-              resettoken: token  } )
-            .then(response=>{
-          console.log(response.data);
-          if (response.data.message === 'Mot de passe modifie') {
-              setError(false)
-              
-          } else {
-            setError(true)
-          }
-        })
+  if (error) {
+    return (
+      <div>
+        <p>Ce lien n'est pas valide</p>
+      </div>
+    );
+  } else {
+    return (
+      <div className="forgotpass">
+        <div className="forgotform">
+          <h1> Reset password</h1>
+          <form className="form" onSubmit={updatePassword}>
+            <label>
+              <p>New password</p>
+              <input
+                type="password"
+                placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </label>
+            <div className="button">
+              <button type="login" onClick={handleClickOpen}>
+                Update
+              </button>
+            </div>
+          </form>
 
-    }
-    
-      
-      if(error){
-          return(
-              <div>
-                  <p>
-                      Ce lien  n'est pas valide 
-                  </p>
-              </div>
-          )
-      }else{
-        return (
-          <div className="forgotpass">
-          <div className='forgotform'>
-              <h1> Reset password</h1>
-              <form className="form" onSubmit={updatePassword}>
-              <label>
-             <p>New password</p>
-          <input type="password" placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' onChange={(event) => setPassword(event.target.value)} />
-        </label>
-        <div className='button'>
-          <button type="login" onClick={handleClickOpen}>Update</button>
-        </div>
-              </form>
-      
-			<Dialog
-			open={open}
-			onClose={handleClose}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		  >
-			<DialogTitle id="alert-dialog-title">
-			  {" Mot de passe modifié "}
-			</DialogTitle>
-			<DialogContent>
-			  <DialogContentText id="alert-dialog-description">
-			 Votre mot de passe a bien été modifié, vous pouvez maintenant vous connecter !  .
-			  </DialogContentText>
-			</DialogContent>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {" Mot de passe modifié "}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Votre mot de passe a bien été modifié, vous pouvez maintenant
+                vous connecter ! .
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
-          <Button onClick={handleLogin}> Se connecter </Button>
-        </DialogActions>
-			</Dialog>
-         
-            </div>
-            </div>
-
-          );
-        
+              <Button onClick={handleLogin}> Se connecter </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </div>
+    );
   }
 }
 
-
 Reset.propTypes = {
-    // eslint-disable-next-line react/require-default-props
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        token: PropTypes.string.isRequired,
-      }),
+  // eslint-disable-next-line react/require-default-props
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      token: PropTypes.string.isRequired,
     }),
-  };
-  
+  }),
+};
 
-
-  /*
+/*
 
 
   import React, { Component } from 'react';

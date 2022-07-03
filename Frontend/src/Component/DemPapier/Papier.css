@@ -1,0 +1,100 @@
+.papier{
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    top: 60px;
+    left: 244px;
+    position: absolute;
+    background-color: transparent ;
+
+}
+.congebtn{
+    top: 89px;
+left: 776px;
+width: 212px;
+height: 35px;
+    background: var(--unnamed-color-009ad2) 0% 0% no-repeat padding-box;
+    background: #009AD2 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    opacity: 1;
+    font: var(--unnamed-font-style-normal) normal 600 var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) Source Sans Pro;
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: center;
+    font: normal normal 600 16px/24px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    position: absolute;
+    border: transparent;
+}
+
+.papier h1{
+    top: 31px;
+left: 33px;
+width: 252px;
+height: 28px;
+font: var(--unnamed-font-style-normal) normal bold 24px/29px var(--unnamed-font-family-helvetica-neue);
+letter-spacing: var(--unnamed-character-spacing-0);
+color: var(--unnamed-color-2d3436);
+text-align: left;
+font: normal normal bold 24px/29px Helvetica Neue;
+letter-spacing: 0px;
+color: #2D3436;
+opacity: 1;
+position: absolute;
+}
+
+
+.MuiDataGrid-columnHeaders{
+    background-color:#E8EBED;
+    opacity: 1;
+}
+
+.MuiDataGrid-footerContainer{
+    background-color:#E8EBED;
+    opacity: 1;
+}
+
+.MuiDataGrid-columnSeparator{
+    display: 'none',
+  }
+
+.congenom{
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/20px Source Sans Pro;
+letter-spacing: var(--unnamed-character-spacing-0);
+color: var(--unnamed-color-009ad2);
+text-align: left;
+text-decoration: underline;
+font: normal normal normal 16px/20px Source Sans Pro;
+letter-spacing: 0px;
+color: #009AD2;
+opacity: 1;
+}
+
+.congeautoad{
+    font: var(--unnamed-font-style-normal) normal 600 var(--unnamed-font-size-16)/22px Source Sans Pro;
+letter-spacing: var(--unnamed-character-spacing-0);
+text-align: center;
+font: normal normal 600 16px/22px Source Sans Pro;
+letter-spacing: 0px;
+color: #0A8E42;
+width: 93px;
+height: 26px;
+background: #E5F6F0 0% 0% no-repeat padding-box;
+border-radius: 13px;
+opacity: 1;
+}
+
+.congeautomg{
+    font: var(--unnamed-font-style-normal) normal 600 var(--unnamed-font-size-16)/22px Source Sans Pro;
+letter-spacing: var(--unnamed-character-spacing-0);
+text-align: center;
+font: normal normal 600 16px/22px Source Sans Pro;
+letter-spacing: 0px;
+color: #FFB200;
+opacity: 1;
+width: 93px;
+height: 26px;
+background: #FFF7E4 0% 0% no-repeat padding-box;border-radius: 13px;
+opacity: 1;
+}
