@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Post = require("../models/poste");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
@@ -98,11 +99,14 @@ exports.signupEmp = async (req, res) => {
 };
 
 exports.updateInfoUser = (req, res) => {
-  User.findOneAndUpdate({ _id: req.params.id }, { ...req.body }, (err) => {
+  console.log(req.user);
+  const _id = req.user;
+
+  User.findOneAndUpdate({ _id }, { ...req.body }, (err) => {
     if (err) {
       return res
         .status(400)
-        .json({ error: "Modification peut etre effectuee" });
+        .json({ error: "Modification  ne peut pas etre effectuee" });
     } else {
       res.status(200).json("Mdification effectuee");
     }
@@ -112,9 +116,7 @@ exports.updateInfoUser = (req, res) => {
 exports.updateInfoEmployee = (req, res) => {
   User.findOneAndUpdate({ _id: req.params.id }, { ...req.body }, (err) => {
     if (err) {
-      return res
-        .status(400)
-        .json({ error: "Modification peut etre effectuee" });
+      return res.status(400).json("Modification peut etre effectuee");
     } else {
       res.status(200).json("Modification effectuee");
     }
@@ -146,10 +148,21 @@ exports.assignManag = (req, res) => {
 };
 
 exports.listEmployee = async (req, res) => {
-  let user = await User.find(
-    { ...req.body },
-    { password: 0, createdAt: 0, updatedAt: 0, __v: 0 }
-  )
+  let filter = {};
+  if (req.query.havePost) {
+    const userHqvePost = await Post.find({
+      userId: { $exists: true },
+    }).distinct("userId");
+
+    filter = { _id: { $nin: userHqvePost } };
+  }
+
+  let user = await User.find(filter, {
+    password: 0,
+    createdAt: 0,
+    updatedAt: 0,
+    __v: 0,
+  })
     .populate("managId", "Nom Prenom")
     .then((user) => {
       if (!user)
@@ -215,8 +228,39 @@ exports.listManager = async (req, res) => {
       res.status(200).json(t);    
       }*/
 
-exports.checkUser = (req, res) => {
-  User.findOne({ _id: req.params.id })
+// exports.checkUser = (req, res) => {
+//   User.findOne({ _id: req.params.id })
+//     .then((user) => {
+//       if (!user) return res.status(401).json({ error: "No user !" });
+//       res.status(200).json(user);
+//     })
+//     .catch((error) => res.status(500).json({ error }));
+// };
+
+// exports.checkGroupeUser = (req, res) => {
+//   User.find({ $and: [{ managId: req.user }, { ...req.body }] })
+//     .then((user) => {
+//       if (!user) return res.status(401).json({ error: "No user !" });
+//       res.status(200).json(user);
+//     })
+//     .catch((error) => res.status(500).json({ error }));
+// };
+
+// exports.affichageInfoUser = async (req, res) => {
+//   let user = await User.find(null, null, { ...req.body })
+//     .then((user) => {
+//       if (!user) return res.status(409).json({ error: "user n'existe pas !" });
+//       res.status(200).json(user);
+//     })
+//     .catch((error) => res.status(500).json({ error }));
+//   return user;
+// };
+
+// User gets his personnel information
+
+exports.checkInfoUser = (req, res) => {
+  User.findOne({ _id: req.user })
+    .populate("managId", "Nom Prenom")
     .then((user) => {
       if (!user) return res.status(401).json({ error: "No user !" });
       res.status(200).json(user);
@@ -224,21 +268,30 @@ exports.checkUser = (req, res) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
+// Admin get one user's information
+
+exports.checkInfoEmp = (req, res) => {
+  User.findOne(
+    { _id: req.params.id },
+    { password: 0, role: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+  )
+    .populate("managId", "Nom Prenom")
+    .then((user) => {
+      if (!user) return res.status(401).json({ error: "No user !" });
+      res.status(200).json(user);
+    })
+    .catch((error) => res.status(500).json({ error }));
+};
+
+//Manager gets list of his group's user
 exports.checkGroupeUser = (req, res) => {
-  User.find({ $and: [{ managId: req.user }, { ...req.body }] })
+  User.find(
+    { $and: [{ managId: req.user }, { ...req.body }] },
+    { password: 0, role: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+  )
     .then((user) => {
       if (!user) return res.status(401).json({ error: "No user !" });
       res.status(200).json(user);
     })
     .catch((error) => res.status(500).json({ error }));
-};
-
-exports.affichageInfoUser = async (req, res) => {
-  let user = await User.find(null, null, { ...req.body })
-    .then((user) => {
-      if (!user) return res.status(409).json({ error: "user n'existe pas !" });
-      res.status(200).json(user);
-    })
-    .catch((error) => res.status(500).json({ error }));
-  return user;
 };

@@ -6,16 +6,17 @@ const auth = require("../middleware/auth");
 const admin = require("../middleware/isAdmin");
 const manag = require("../middleware/isManager");
 
-router.post("/", [auth, admin], registerEmpCtrl.signupEmp);
-//router.put('/',validEmpCtrl.resetPass);
-//router.put('/:id',[auth,admin],registerEmpCtrl.assignManag);
-//router.put('/:id',/*auth,*/registerEmpCtrl.updateInfoUser);
-router.put("/:id", /*auth,*/ registerEmpCtrl.updateInfoEmployee);
-//router.get("/", /*[auth, admin],*/ registerEmpCtrl.listEmployee);
-//router.get("/:id", registerEmpCtrl.checkUser);
-router.get("/" /*, [auth, manag],*/, registerEmpCtrl.checkGroupeUser);
-router.post("/ajout", registerEmpCtrl.signupEmp);
-//router.get("/", registerEmpCtrl.listManager);
-//router.get("/", registerEmpCtrl.affichageInfoUser);
+router.post("/ajout", [auth, admin], registerEmpCtrl.signupEmp);
+router.put("/", validEmpCtrl.resetPass);
+router.put("/UIE/:id", [auth, admin], registerEmpCtrl.updateInfoEmployee);
+router.get("/List", [auth, admin], registerEmpCtrl.listEmployee);
+//router.post("/ajout", registerEmpCtrl.signupEmp);
+router.get("/ListManager", auth, registerEmpCtrl.listManager);
+//router.get("/PIU", registerEmpCtrl.affichageInfoUser);
+router.get("/emp/:id", [auth, admin], registerEmpCtrl.checkInfoEmp);
+router.get("/user", auth, registerEmpCtrl.checkInfoUser);
+router.put("/UIU", auth, registerEmpCtrl.updateInfoUser);
+router.get("/group", [auth, manag], registerEmpCtrl.checkGroupeUser);
+router.put("/:id", [auth, admin], registerEmpCtrl.assignManag);
 
 module.exports = router;

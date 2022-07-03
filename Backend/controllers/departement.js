@@ -12,7 +12,7 @@ exports.createDep = async (req, res) => {
    res.send(valid);*/
   let user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(409).json({ message: "Cette section est vide" });
+    return res.status(409).json("Cette section est vide");
   }
   const depart = new dep({
     NomD: req.body.NomD,
@@ -20,13 +20,13 @@ exports.createDep = async (req, res) => {
   });
   depart
     .save()
-    .then(() => res.status(200).json("departement enregistre !"))
+    .then(() => res.status(201).json("departement enregistre !"))
     .catch((error) => res.status(400).json({ error }));
 };
 
 exports.listDep = async (req, res) => {
   dep
-    .find({ ...req.body }, { _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+    .find({ ...req.body }, { createdAt: 0, updatedAt: 0, __v: 0 })
     .populate("RespId", "Nom Prenom")
     .then((d) => {
       if (!d) {
@@ -38,8 +38,8 @@ exports.listDep = async (req, res) => {
 };
 exports.getOneDep = async (req, res) => {
   dep
-    .findById(req.params.id, { _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
-    .populate("RespId", "Nom Prenom")
+    .findById(req.params.id, { createdAt: 0, updatedAt: 0, __v: 0 })
+    .populate("RespId", "Nom Prenom email")
     .then((d) => {
       if (!d) {
         return res.status(401).json({ error: "cette section est vide !" });
@@ -48,13 +48,39 @@ exports.getOneDep = async (req, res) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
-
 exports.editDep = (req, res) => {
+  // dep.findOneAndUpdate({ _id: req.params.id }, { ...req.body }, (err) => {
+  //   if (err) {
+  //     res.status(400).json({ error: "modification ne peut etre sauvegarder" });
+  //   } else {
+  //     res.status(200).json({ message: "modificaation sauvegarde" });
+  //   }
+  // });
   dep.findOneAndUpdate({ _id: req.params.id }, { ...req.body }, (err) => {
     if (err) {
       res.status(400).json({ error: "modification ne peut etre sauvegarder" });
     } else {
-      res.status(200).json("modificaation sauvegarde");
+      res.status(200).json({ message: "modificaation sauvegarde" });
     }
   });
 };
+
+// exports.editDep = async (req, res) => {
+//   let user = await User.findOne({ email: req.body.email });
+//   if (!user) {
+//     return res.status(409).json("Cette section est vide");
+//   }
+//   dep.findOneAndUpdate(
+//     { _id: req.params.id },
+//     { email: req.body.email, RespId: user._id },
+//     (err) => {
+//       if (err) {
+//         res
+//           .status(400)
+//           .json({ error: "modification ne peut etre sauvegarder" });
+//       } else {
+//         res.status(200).json("modificaation sauvegarde");
+//       }
+//     }
+//   );
+// };

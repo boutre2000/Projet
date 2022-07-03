@@ -4,18 +4,17 @@ const nodemailer = require("nodemailer");
 
 exports.planifierCongéA = async (req, res) => {
   console.log(req.body);
-  const schema = Joi.object({
-    DateDébut: Joi.date().required(),
-
-    DateFin: Joi.date().required(),
-  });
-  let valid = await schema.validateAsync(req.body);
-  res.send(valid);
+  // const schema = Joi.object({
+  //   DateDébut: Joi.date().required(),
+  //   DateFin: Joi.date().required(),
+  // });
+  // let valid = await schema.validateAsync(req.body);
+  // res.send(valid);
 
   const RequestCongé = new congé({
     DateDébut: req.body.DateDébut,
     DateFin: req.body.DateFin,
-    Status: "Debut de Congé",
+    Status: req.body.Status,
   });
   console.log("Enregistrement dans la base de donnée avec succées");
 
@@ -56,36 +55,44 @@ exports.planifierCongéA = async (req, res) => {
 };
 
 exports.ListerLesPlanificationDeCongéAnnuelPourAdmin = async (req, res) => {
-  console.log("la Planification de Congé Annuel est  : ");
+  await congé
+    .find({})
 
-  console.log(req.body);
+    .then((cong) => {
+      if (!cong) {
+        return res.status(401).json({ error: "cette section est vide !" });
+      }
+      res.status(200).json(cong);
+    })
+    .catch((error) => res.status(500).json({ error }));
+};
+exports.getOneCong = async (req, res) => {
+  const cong = await congé.findOne({ _id: req.params.id });
 
-  await congé.find({}, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Second function call : ", docs);
+  if (!cong) {
+    return res.status(401).json({ error: "cette section est vide !" });
+  }
+  res.status(200).json(cong);
+
+  // res.send("listing of internel communication emcomloye");
+};
+exports.editCon = (req, res) => {
+  congé.updateMany(
+    { _id: req.params.id },
+    {
+      DateDébut: req.body.DateDébut,
+      DateFin: req.body.DateFin,
+      Status: req.body.Status,
+    },
+    { new: true },
+
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Internal communication Ucomdated : ", docs);
+      }
     }
-  });
-  res.send("listing of planification leave admin");
+  );
+  res.send("Internal communication Ucomdated");
 };
-exports.ListerLaPlanificationDeCongéAnnuelPourEmployé = async (req, res) => {
-  console.log("la Planification de Congé Annuel est  : ");
-
-  console.log(req.body);
-
-  await congé.findById({ _id: req.params.id }, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Second function call : ", docs);
-    }
-  });
-  res.send("listing of planification leave employe");
-};
-/*
-exports.notifierLesEmployésFinDeCongé = async (req, res) => {
-
-
-};
-*/
