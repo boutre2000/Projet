@@ -7,7 +7,7 @@ const admin = require('../middleware/isAdmin');
 
 
 
-router.post('/add',[auth,admin],postCtrl.createPoste);
+router.post('/add',postCtrl.createPoste);
 router.get('/list',[auth,admin],postCtrl.listPost);
 router.put('/edit/:id',[auth,admin], postCtrl.editPost);
 router.get('/preview/:id',auth, postCtrl.checkonePst);

@@ -23,12 +23,15 @@ exports.createPoste =  async (req,res)=>{
   })
   
    let valid = await schema.validateAsync(req.body)*/
-   
+
+   if(!req.body.nomP)
+   return res.status(400).json("Veuillez remplir le champ nomP" )
+      
    let user= await User.findOne({ email : req.body.email})
     if (!user) {
     return res
     .status(409)
-    .json({ message: 'Cette section est vide' });
+    .json('Cette section est vide' );
     }
    const dep = await Dep.findOne({NomD:req.body.NomD});
     if (!dep) {
@@ -97,7 +100,7 @@ exports.listPost =  (req, res,next) => {
     
     
      if(req.body.emp){
-      User.findOne({email: req.body.email})
+      User.findOne({email: req.body.emp})
        .then(user=>{
         req.body.emp= user._id;
        })

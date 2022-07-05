@@ -47,7 +47,7 @@ export const SidebarData = [
   },
   {
     title: 'Liste des employés',
-    path: '/',
+    path: '/ListEmp',
     icon: <FiIcons.FiUsers style={style} />,
     cName: 'nav-text'
   },
@@ -71,7 +71,7 @@ export const SidebarData = [
   },
   {
     title: 'Assiduités',
-    path: '/support',
+    path: '/listpres',
     icon: <RiIcons.RiFingerprintLine style={style} />,
     cName: 'nav-text'
   },

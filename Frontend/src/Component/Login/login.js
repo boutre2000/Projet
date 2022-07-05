@@ -43,7 +43,7 @@ export default function Login({ setToken }) {
 		  password
 		});
 		setToken(token);
-		if(token!=='login succeeded !'){
+		if(token.message!=='login succeeded !'){
 			setError(true)
 			console.log(token)
 		}

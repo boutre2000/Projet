@@ -1,29 +1,29 @@
-.nav{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    top: 0;
-    flex-wrap: nowrap;
-    height: 60px;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    box-shadow: 0px 7px 20px #636E721A;
-    opacity: 1;
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  top: 0;
+  flex-wrap: nowrap;
+  height: 60px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 7px 20px #636e721a;
+  opacity: 1;
 }
 
-
-.nav  img{
-    position: absolute;
-    left: 35px;
-   
-   
+.nav img {
+  position: absolute;
+  left: 35px;
 }
 
-.nav  button{
-    right: 25px;
-    
-    background: #009AD2 0% 0% no-repeat padding-box;
-    border-color:  #009AD2;
-    position: absolute;
-    border-radius: 4px;
+.nav button {
+  right: 10px;
+  background: #fcfdfd 0% 0% no-repeat padding-box;
+  border-color: #f8f9fa;
+  position: absolute;
+  border-radius: 4px;
+}
+.nav Avatar src {
+  position: relative;
+  left: "10px";
 }

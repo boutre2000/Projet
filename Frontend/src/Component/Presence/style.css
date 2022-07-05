@@ -1,0 +1,44 @@
+.ajout .filab{
+    top: 140px;
+    left: 90px;
+    width: 290px;
+    height: 40px;
+    position: absolute;
+    border: 1px dashed var(--unnamed-color-b9c4c8);
+    border: 1px dashed #B9C4C8;
+    opacity: 1;
+    border-radius: 4px;
+    text-align: left;
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-helvetica-neue);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-009ad2);
+    font: normal normal normal 16px/24px Helvetica Neue;
+    letter-spacing: 0px;
+    color: #009AD2;
+    padding-top: 8px;
+    padding-left: 10px;
+    display: flex;
+    justify-content: space-around;
+    }
+
+    .pressub {
+
+        top:250px;
+        left: 130px;
+        width: 212px;
+        height: 35px;
+            background: var(--unnamed-color-009ad2) 0% 0% no-repeat padding-box;
+            background: #009AD2 0% 0% no-repeat padding-box;
+            border-radius: 4px;
+            opacity: 1;
+            font: var(--unnamed-font-style-normal) normal 600 var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) Source Sans Pro;
+            letter-spacing: var(--unnamed-character-spacing-0);
+            text-align: center;
+            font: normal normal 600 16px/24px Source Sans Pro;
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            opacity: 1;
+            position: absolute;
+            border: transparent;
+            
+    }

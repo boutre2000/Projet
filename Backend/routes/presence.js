@@ -8,11 +8,13 @@ const multer = require('../middleware/multerConfig');
 const authz = require('../middleware/authorization');
 
 //router.post('/',[auth,admin,multer], presenceCtrl.savePres);
-router.post('/set',[multer], presenceCtrl.setPres);
+router.post('/set',[auth,admin,multer], presenceCtrl.setPres);
 router.put('/:id',[auth,admin], presenceCtrl.updatePres);
-//router.get('/',[auth,admin], admin,presenceCtrl.getPres);
-router.get('/', [auth,admin],presenceCtrl.checkAnomaliePres);
-//router.get('/:id', auth,demCongCtrl.checkonePres);
+router.get('/list',[auth,admin],presenceCtrl.getPres);
+//router.get('/', [auth,admin],presenceCtrl.checkAnomaliePres);
+router.get('/getone/:id',auth,presenceCtrl.checkoneAss);
+router.get('/getonepres/:id',auth,presenceCtrl.checkonePres);
+router.get('/user',auth, presenceCtrl.checkPresUser);
 
 
 

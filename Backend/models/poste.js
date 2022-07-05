@@ -11,7 +11,7 @@ const { stringify } = require('nodemon/lib/utils')
     Salaire :{type: Number},
       //    ,required: true },
         
-    StatusP :{type: String, enum:['Actif','Non-actif']},
+    StatusP :{type: String, enum:['Actif','Non-Actif']},
       // ,required: true},
     
     DateE: {type: Date},

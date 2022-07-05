@@ -23,10 +23,11 @@ async function Ajt(conf,request){
    
    return  axios.post('http://localhost:4000/dep/add',request, conf)
     .then(resp => {
-        alert(resp.data);
+        console.log(resp)
     })
     .catch(err => {
         console.log(err);
+        alert("error");
     })
 }
 
@@ -159,11 +160,11 @@ let navigate = useNavigate();
             <form onSubmit={handleSubmit}>
                 &nbsp; &nbsp; &nbsp;<label htmlFor="fname" className='flab'>Nom du département :</label><br /><br />
                 &nbsp; &nbsp; &nbsp;<input type="text" id="fname" name="fname" onChange={e => setNomD(e.target.value)} ></input><br />
-                <select name="email" defaultValue={'DEFAULT'}  id="lname" value={data.email} onChange={e => setEmail(e.target.value)}  >
-                <option value="none" selected disabled hidden> 
-            </option> 
-                       {data.map((d)=>(
-                        <option key={d}  >
+                <select name="email"   id="lname" value={data.email} onChange={e => setEmail(e.target.value)}  >
+                
+            
+                       {data.map((d, index)=>(
+                        <option key={index}  >
                         {d.email}
 
 

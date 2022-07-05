@@ -10,6 +10,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
+
 export default function Addconge() {
   const [dateDebut, setDateDebut] = useState();
   const [dateFin, setDateFin] = useState();
@@ -18,6 +19,7 @@ export default function Addconge() {
   const [file, setFile] = useState();
   const [pj, setPj] = useState("Ajouter la justification");
   const [open, setOpen]= React.useState(false);
+  const [error, setError]= React.useState(false);
   let navigate= useNavigate()
 
 
@@ -31,25 +33,52 @@ export default function Addconge() {
     }
 }
   const send = event => {
+    event.preventDefault();
     const data = new FormData();
     data.append("dateDebut", dateDebut);
     data.append("dateFin", dateFin);
     data.append("motif", motif);
     data.append("type", type);
-
     data.append("file", file);
 
    
 
-    Axios.post('http://localhost:4000/demCong/add', data, config)
-      .then(res => setOpen(true))
-      .catch(err => console.log(err));
+  Axios.post('http://localhost:4000/demCong/add', data, config)
+      .then(res => {
+        
+        if (res.data === 'request saved !') {
+        setError(false);
+        setOpen(true);
+      
+      }else{
+
+          setError(true)
+          alert('une erreur est survenue')
+        }
+        
+  })
+      .catch(err => {console.log(err)
+      alert('une erreur est survenue')}
+      );
 
      
   };
+
+
+    
+ 
+
+
   const handleClose = () => {
     setOpen(false);
   };
+
+
+       
+  const handleClickOpen = () => {
+    if(!error)
+  setOpen(true);
+};
 
   const handleChange = (e) => {
     setFile(e.target.files[0])
@@ -64,15 +93,17 @@ export default function Addconge() {
         <button className="addcgret" onClick={()=>navigate('/conge')}>Retour</button>
         <div className="addcgtit"> Créer une demande  </div>
         <button className="addcgret"  onClick={send}>Créer</button>
+        
         </div>
         <div className="addcgformcont">
-        <form action="#">
+        <form>
           <div className="addcgform">
             <label className="dblab" htmlFor="dateDebut">Date début</label>
             <input 
             className="dbinp"
               type="date"
               name="dateDebut"
+              id="dateDebut"
               onChange={event => {
                 const { value } = event.target;
                 setDateDebut(value);
@@ -85,6 +116,7 @@ export default function Addconge() {
             className="dfinp"
               type="date"
               name="dateFin"
+              id="dateFin"
               onChange={event => {
                 const { value } = event.target;
                 setDateFin(value);
@@ -97,6 +129,7 @@ export default function Addconge() {
             className="tpinp"
               type="text"
               name="type"
+              id="type"
               placeholder="Exceptionnel, Sans-solde"
               onChange={event => {
                 const { value } = event.target;
@@ -110,6 +143,7 @@ export default function Addconge() {
             className="moinp"
               type="text"
               name="motif"
+              id="motif"
               onChange={event => {
                 const { value } = event.target;
                 setMotif(value);
@@ -121,6 +155,7 @@ export default function Addconge() {
             <input
               className="fiinp"
               type="file"
+              name="file"
               id="file"
               placeholder="Choisir un fichier"
               style={{display: "none", border: 'dashed'}}
@@ -130,10 +165,11 @@ export default function Addconge() {
             />
             </div>
           </div>
+          
         </form>
         
      </div>
-     { open &&(
+     { !error && open &&(
             <div>
          <Dialog
         open={open}

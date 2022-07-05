@@ -10,6 +10,7 @@ router.get('/list', [auth,admin],demPapCtrl.listDemPapier);
 router.get('/user', auth,demPapCtrl.checklistDemPapUser);
 router.get('/preview/:id', auth,demPapCtrl.checkoneDemPap);
 router.put('/repad/:id',auth,demPapCtrl.resDemPapier);
+router.put('/send/:id',auth,demPapCtrl.senddoc);
 
 
 module.exports = router;

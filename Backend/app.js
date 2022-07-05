@@ -36,10 +36,12 @@ app.use(cors(corsOptions));
 
  app.use(express.json());
 app.use('/login', loginRoutes);
-app.use('/user', registerEmpRoutes);
+app.use("/AjoutEmp", registerEmpRoutes);
+app.use("/ListEmpParManager", registerEmpRoutes);
+app.use("/User", registerEmpRoutes);
 app.use('/demCong',demConRoutes);
 app.use('/demPap',demPapRoutes);
-//app.use('/',demAbsRoutes);
+app.use("/demAbs", demAbsRoutes);
 app.use('/pres',presenceRoutes);
 app.use('/dep',depRoutes);
 app.use('/post',posteRoutes);

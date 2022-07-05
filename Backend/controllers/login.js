@@ -49,7 +49,7 @@ exports.signin = (req, res, next) => {
   const token= jwt.sign(
       { _id: User._id },
       process.env.resetToken,
-      { expiresIn: '24h' }
+     // { expiresIn: '24h' }
     );
     user.updateOne
     ({resetLink: token}, (err) =>{

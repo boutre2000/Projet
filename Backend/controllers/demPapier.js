@@ -72,3 +72,48 @@ exports.createDemPap = (req, res) => {
             }
         })
        }
+
+
+
+       exports.senddoc= async (req,res)=>{
+       
+        Papier.findOne({_id: req.params.id}, (err,p) =>{
+          if(err){
+             return res.status(400).json({error})
+           }else{
+                  
+              User.findById(p.userId)
+              .then(user=>{
+            if(!user){
+              return res.status(400).json({error})
+            }
+
+
+        var transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          port: 465,
+          auth: {
+            user: 'ib_refas@esi.dz',
+            pass: '31029810'
+          }
+        });
+        const mailOptions={
+          from :'ib_refas@esi.dz',
+          to: user.email,
+          subject: 'Communication document administratif demandé',
+         
+          html: '<p>Click <a href="http://localhost:3000/dempapsend/' + req.file.path + '">here</a> Merci de trouver votre document ci-joint</p>'
+          }  ;
+     
+          transporter.sendMail(mailOptions, (error) => {
+            if(error){
+              res.status(500).json({ error })
+            }else{
+                res.status(200).json('un email est envoye')
+            }
+        })
+      })
+      }
+       })
+      
+      }

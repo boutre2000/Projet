@@ -58,8 +58,7 @@ const role= token.role;
           type: data?.type,
           motif: data?.motif,
           userId: data?.userId?.Nom +' '+  data?.userId?.Prenom,
-          dateDebut: dayjs(data?.dateDebut)?.format('DD-MM-YYYY'),
-          dateFin: dayjs(data?.dateFin)?.format('DD-MM-YYYY'),
+         
           cause: data?.cause
           
         }));
@@ -104,6 +103,34 @@ const role= token.role;
            
            })
     }
+ 
+
+
+
+    React.useEffect(() => {  
+      const fetchFCT = async () => {
+        try {
+          
+          const { data } = await axios.get(
+            `http://localhost:4000/demCong/fileview/${id}`, config
+          );
+          
+          // var file = new Blob([dem.data]);
+        // const fileURL = URL.createObjectURL(file);
+        // setPj(fileURL);
+        
+          setPj(`http://localhost:4000/${data}`);
+          
+          console.log(data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      if (id) fetchFCT();
+    }, [id]);
+    
+   
+  
     const onError = e => {
       console.log(e, "error in file-viewer");
     };
@@ -128,11 +155,11 @@ const role= token.role;
             </fieldset>
             <fieldset className='prevcause'>
                 <legend>Justification:</legend>
-                
+                <iframe src={pj} />
             </fieldset>
             <button className="prevbtntel" onClick={(e)=>{telecharger(e)}}><RiIcons.RiFileDownloadLine/> Télécharger</button>
             
-            <a href={pj} target='_blank' > click </a>
+           {/* { <a href={pj} target='_blank' > click </a>} */}
 
 
             <button className="prevbtnacc"  onClick={(e)=>{accepter(e)}}>Accepter</button>

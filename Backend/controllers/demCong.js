@@ -17,7 +17,7 @@ exports.createDemCong = (req, res) => {
           cause: file.path
         });
         cong.save()
-          .then(() => res.status(201).json({ message: 'request saved !' }))
+          .then(() => res.status(201).json( 'request saved !' ))
           .catch(error => res.status(500).json({ error }));
  }
 
@@ -43,11 +43,13 @@ catch(error){
 };
 exports.viewCause =(req, res) => {
   //return res.sendFile(path.join(`${__dirname}/../views/index.html`));
+
   Cong.findOne({_id:req.params.id},(err,demande)=>{
     if(err)
       return res .status(500) .json({err});
     
-       res.send(demande.cause);
+      // res.send(demande.cause);
+      res.sendFile(__dirname + demande.cause);
     
   })
   

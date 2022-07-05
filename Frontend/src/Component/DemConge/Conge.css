@@ -8,7 +8,7 @@
     background-color: transparent ;
 
 }
-.congebtn, .congebtna{
+.congebtn, .congebtna,.congebtnf, .congebtnm{
     top: 89px;
 left: 776px;
 width: 212px;
@@ -32,8 +32,32 @@ height: 35px;
 
     left: 530px;
     position: absolute;
+    top: 89px;
+}
+.congebtnf{
+    left: 150px;
+    position: absolute;
+    width: 300px;
+    top: 45px;
 }
 
+
+
+
+
+
+.datesearche{
+    top: 80px;
+    left: 80px;
+    position: absolute;
+    
+    opacity: 1;
+}
+.datesearche input{
+    width: 212px;
+    height: 35px;
+    border-radius: 4px;
+}
 .conge h1{
     top: 31px;
 left: 33px;

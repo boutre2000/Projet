@@ -26,7 +26,8 @@ export default function UpdateC() {
   const [datad, setDatad] = React.useState([]);
   const [datap, setDatap] = React.useState([]);
   const [error, setError]= React.useState(false);
-  const [form, setForm] = React.useState({});
+  const [form,setForm] = React.useState({email:"",pj:"",dateEd:"", nomP:"" })
+
 
   const { id } = useParams();
 
@@ -82,16 +83,16 @@ export default function UpdateC() {
     const fetchFCT = async () => {
       try {
         const  {data}  = await axios.get( `http://localhost:4000/contrat/getone/${id}`, config )
-        
-        setForm((curr) => ({   
+        console.log(data.dateEd)
+        setForm ({   
           nomP: data?.posteId?.nomP,
           email: data?.posteId?.userId?.email,
           dateEd: dayjs(data?.dateEd)?.format('YYYY-MM-DD'),
           pj: data?.pj
           
           
-        }));
-        console.log(form.email)
+        });
+        console.log(form?.nomP)
       } catch (err) {
         console.log(err);  } };
     if (id) fetchFCT();
@@ -160,12 +161,14 @@ export default function UpdateC() {
                      </option>))}
                        </select>
 
-        <label  htmlFor="postId">Poste</label>
-        <select name="postId" defaultValue={form.nomP} onChange={e => setNomP(e.target.value)}   >
+        <label  htmlFor="posteId">Poste</label>
+        <select name="posteId"   defaultValue={form.nomP }  label={form.nomP}    onChange={e => setNomP(e.target.value)}   >
                        {datad.map((d, index)=>(
-                        <option key={index} >
-                        {d.nomP}
-                     </option>))}
+                        
+                        <option key={index} value={d.nomP} label={d.nomP} />
+                         
+    
+                        ))}
                        </select>
 
 
